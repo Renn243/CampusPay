@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.mahasiswa')
 
 @section('content')
 <div class="col-md-9 col-lg-10 ms-sm-auto content p-4">
@@ -17,7 +17,7 @@
                                 <div class="d-flex w-100 justify-content-between align-items-center">
                                     <div>
                                         <h6 class="mb-1">SPP Semester Ganjil 2023/2024</h6>
-                                        <p class="mb-1 text-muted small">Jatuh tempo: 30 Agustus 2023</p>
+                                        <p class="mb-1 text-muted small">Batas waktu: 30 Agustus 2023</p>
                                     </div>
                                     <div class="text-end">
                                         <h5 class="mb-1">Rp 5.000.000</h5>
@@ -25,19 +25,17 @@
                                     </div>
                                 </div>
                                 <div class="mt-2 d-grid">
-                                    <button class="btn btn-primary btn-bayar"
-                                        data-category="SPP Semester Ganjil 2023/2024" data-amount="5000000">
+                                    <button class="btn btn-primary btn-bayar" data-category="SPP Semester Ganjil 2023/2024" data-amount="5000000">
                                         Bayar Sekarang
                                     </button>
                                 </div>
-
                             </div>
 
                             <div class="list-group-item list-group-item-action">
                                 <div class="d-flex w-100 justify-content-between align-items-center">
                                     <div>
                                         <h6 class="mb-1">KKN Periode Juli 2023</h6>
-                                        <p class="mb-1 text-muted small">Jatuh tempo: 15 Agustus 2023</p>
+                                        <p class="mb-1 text-muted small">Batas waktu: 15 Agustus 2023</p>
                                     </div>
                                     <div class="text-end">
                                         <h5 class="mb-1">Rp 2.500.000</h5>
@@ -45,8 +43,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-2 d-grid">
-                                    <button class="btn btn-primary btn-bayar"
-                                        data-category="KKN Periode Juli 2023" data-amount="2500000">
+                                    <button class="btn btn-primary btn-bayar" data-category="KKN Periode Juli 2023" data-amount="2500000">
                                         Bayar Sekarang
                                     </button>
                                 </div>
@@ -56,7 +53,7 @@
                                 <div class="d-flex w-100 justify-content-between align-items-center">
                                     <div>
                                         <h6 class="mb-1">Ujian Proposal</h6>
-                                        <p class="mb-1 text-muted small">Jatuh tempo: 30 September 2023</p>
+                                        <p class="mb-1 text-muted small">Batas waktu: 30 September 2023</p>
                                     </div>
                                     <div class="text-end">
                                         <h5 class="mb-1">Rp 750.000</h5>
@@ -64,8 +61,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-2 d-grid">
-                                    <button class="btn btn-primary btn-bayar" data-category="Ujian Proposal"
-                                        data-amount="750000">
+                                    <button class="btn btn-primary btn-bayar" data-category="Ujian Proposal" data-amount="750000">
                                         Bayar Sekarang
                                     </button>
                                 </div>
@@ -75,7 +71,7 @@
                                 <div class="d-flex w-100 justify-content-between align-items-center">
                                     <div>
                                         <h6 class="mb-1">Ujian Skripsi</h6>
-                                        <p class="mb-1 text-muted small">Jatuh tempo: 15 Oktober 2023</p>
+                                        <p class="mb-1 text-muted small">Batas waktu: 15 Oktober 2023</p>
                                     </div>
                                     <div class="text-end">
                                         <h5 class="mb-1">Rp 1.500.000</h5>
@@ -83,8 +79,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-2 d-grid">
-                                    <button class="btn btn-primary btn-bayar" data-category="Ujian Skripsi"
-                                        data-amount="1500000">
+                                    <button class="btn btn-primary btn-bayar" data-category="Ujian Skripsi" data-amount="1500000">
                                         Bayar Sekarang
                                     </button>
                                 </div>
@@ -94,7 +89,7 @@
                                 <div class="d-flex w-100 justify-content-between align-items-center">
                                     <div>
                                         <h6 class="mb-1">Biaya Wisuda</h6>
-                                        <p class="mb-1 text-muted small">Jatuh tempo: 30 November 2023</p>
+                                        <p class="mb-1 text-muted small">Batas waktu: 30 November 2023</p>
                                     </div>
                                     <div class="text-end">
                                         <h5 class="mb-1">Rp 3.000.000</h5>
@@ -102,8 +97,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-2 d-grid">
-                                    <button class="btn btn-primary btn-bayar" data-category="Biaya Wisuda"
-                                        data-amount="3000000">
+                                    <button class="btn btn-primary btn-bayar" data-category="Biaya Wisuda" data-amount="3000000">
                                         Bayar Sekarang
                                     </button>
                                 </div>
@@ -126,8 +120,7 @@
                             <li>Pembayaran akan diverifikasi secara otomatis</li>
                         </ol>
                         <div class="alert alert-info" role="alert">
-                            <i class="bi bi-info-circle me-2"></i> Pembayaran akan langsung terverifikasi
-                            setelah pembayaran berhasil.
+                            <i class="bi bi-info-circle me-2"></i> Pembayaran akan langsung terverifikasi setelah pembayaran berhasil.
                         </div>
                     </div>
                 </div>
@@ -178,8 +171,8 @@
                     </div>
 
                     <div class="alert alert-info">
-                        <i class="bi bi-info-circle me-2"></i> Dengan melanjutkan, Anda akan
-                        diarahkan ke halaman pembayaran Midtrans untuk menyelesaikan transaksi.
+                        <i class="bi bi-info-circle me-2"></i>
+                        Dengan melanjutkan, Anda akan diarahkan ke halaman pembayaran Midtrans untuk menyelesaikan transaksi.
                     </div>
                 </div>
                 <div class="modal-footer">

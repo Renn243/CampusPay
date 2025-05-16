@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.mahasiswa')
 
 @section('content')
 <div class="col-md-9 col-lg-10 ms-sm-auto content p-4">
@@ -37,8 +37,7 @@
                                 <td>Rp 5.000.000</td>
                                 <td><span class="badge bg-success">Disetujui</span></td>
                                 <td>
-                                    <a href="{{ url('detailPembayaran') }}"><button
-                                            class="btn btn-sm btn-primary">Detail</button></a>
+                                    <a href="{{ url('detailPembayaran') }}"><button class="btn btn-sm btn-primary">Detail</button></a>
                                 </td>
                             </tr>
                             <tr>
@@ -48,8 +47,7 @@
                                 <td>Rp 2.500.000</td>
                                 <td><span class="badge bg-success">Disetujui</span></td>
                                 <td>
-                                    <a href="{{ url('detailPembayaran') }}"><button
-                                            class="btn btn-sm btn-primary">Detail</button></a>
+                                    <a href="{{ url('detailPembayaran') }}"><button class="btn btn-sm btn-primary">Detail</button></a>
                                 </td>
                             </tr>
                             <tr>
@@ -59,8 +57,7 @@
                                 <td>Rp 750.000</td>
                                 <td><span class="badge bg-warning text-dark">Menunggu</span></td>
                                 <td>
-                                    <a href="{{ url('detailPembayaran') }}"><button
-                                            class="btn btn-sm btn-primary">Detail</button></a>
+                                    <a href="{{ url('detailPembayaran') }}"><button class="btn btn-sm btn-primary">Detail</button></a>
                                 </td>
                             </tr>
                             <tr>
@@ -70,8 +67,7 @@
                                 <td>Rp 1.200.000</td>
                                 <td><span class="badge bg-success">Disetujui</span></td>
                                 <td>
-                                    <a href="{{ url('detailPembayaran') }}"><button
-                                            class="btn btn-sm btn-primary">Detail</button></a>
+                                    <a href="{{ url('detailPembayaran') }}"><button class="btn btn-sm btn-primary">Detail</button></a>
                                 </td>
                             </tr>
                             <tr>
@@ -81,8 +77,7 @@
                                 <td>Rp 5.000.000</td>
                                 <td><span class="badge bg-success">Disetujui</span></td>
                                 <td>
-                                    <a href="{{ url('detailPembayaran') }}"><button
-                                            class="btn btn-sm btn-primary">Detail</button></a>
+                                    <a href="{{ url('detailPembayaran') }}"><button class="btn btn-sm btn-primary">Detail</button></a>
                                 </td>
                             </tr>
                         </tbody>

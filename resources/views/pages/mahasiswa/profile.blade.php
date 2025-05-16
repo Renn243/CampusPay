@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.mahasiswa')
 
 @section('content')
 <div class="col-md-9 col-lg-10 ms-sm-auto content p-4">
@@ -9,17 +9,11 @@
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-body text-center">
-                        <img src="https://via.placeholder.com/150" alt="Profile Picture"
-                            class="profile-img mb-3">
-                        <h5>Nama Mahasiswa</h5>
+                        <h5>Uzumaki Naruto</h5>
                         <p class="text-muted">NIM: 123456789</p>
-                        <p class="mb-1"><i class="bi bi-envelope me-2"></i>mahasiswa@email.com</p>
-                        <p class="mb-1"><i class="bi bi-telephone me-2"></i>+62 812-3456-7890</p>
-                        <p><i class="bi bi-geo-alt me-2"></i>Jakarta, Indonesia</p>
-                        <button class="btn btn-outline-primary btn-sm mt-2" data-bs-toggle="modal"
-                            data-bs-target="#changePhotoModal">
-                            <i class="bi bi-camera"></i> Ubah Foto
-                        </button>
+                        <p class="mb-1"><i class="bi bi-envelope me-2"></i>uzumakinaruto@email.com</p>
+                        <p class="mb-1"><i class="bi bi-telephone me-2"></i>+62 812-1234-5678</p>
+                        <p><i class="bi bi-geo-alt me-2"></i>Makassar, Indonesia</p>
                     </div>
                 </div>
 
@@ -60,24 +54,24 @@
 
                                 <div class="mb-3">
                                     <label class="form-label text-muted">Fakultas</label>
-                                    <h6>Teknik</h6>
+                                    <h6>Ilmu Komputer</h6>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label text-muted">Email</label>
-                                    <h6>mahasiswa@email.com</h6>
+                                    <h6>uzumakinaruto@email.com</h6>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label text-muted">Nomor Telepon</label>
-                                    <h6>+62 812-3456-7890</h6>
+                                    <h6>+62 812-1234-5678</h6>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label text-muted">Alamat</label>
-                                    <h6>Jl. Contoh No. 123, Jakarta Selatan, DKI Jakarta</h6>
+                                    <h6>Jl. Semangka</h6>
                                 </div>
 
                                 <div class="mb-3">
@@ -88,12 +82,10 @@
                         </div>
 
                         <div class="d-flex justify-content-end">
-                            <button class="btn btn-outline-primary me-2" data-bs-toggle="modal"
-                                data-bs-target="#editProfileModal">
+                            <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                                 <i class="bi bi-pencil-square me-2"></i> Edit Profile
                             </button>
-                            <button class="btn btn-outline-secondary" data-bs-toggle="modal"
-                                data-bs-target="#changePasswordModal">
+                            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
                                 <i class="bi bi-key me-2"></i> Ubah Password
                             </button>
                         </div>
@@ -104,8 +96,7 @@
     </div>
 
     <!-- Change Photo Modal -->
-    <div class="modal fade" id="changePhotoModal" tabindex="-1" aria-labelledby="changePhotoModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="changePhotoModal" tabindex="-1" aria-labelledby="changePhotoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -130,8 +121,7 @@
     </div>
 
     <!-- Edit Profile Modal -->
-    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -186,16 +176,14 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" onclick="saveProfile()">Simpan
-                        Perubahan</button>
+                    <button type="button" class="btn btn-primary" onclick="saveProfile()">Simpan Perubahan</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Change Password Modal -->
-    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -205,29 +193,25 @@
                 <div class="modal-body">
                     <form id="passwordForm">
                         <div class="mb-3">
-                            <label for="currentPassword" class="form-label">Password Saat
-                                Ini</label>
+                            <label for="currentPassword" class="form-label">Password Saat Ini</label>
                             <input type="password" class="form-control" id="currentPassword" required>
                         </div>
 
                         <div class="mb-3">
                             <label for="newPassword" class="form-label">Password Baru</label>
                             <input type="password" class="form-control" id="newPassword" required>
-                            <div class="form-text">Password minimal 8 karakter dengan kombinasi
-                                huruf dan angka.</div>
+                            <div class="form-text">Password minimal 8 karakter dengan kombinasi huruf dan angka.</div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Konfirmasi Password
-                                Baru</label>
+                            <label for="confirmPassword" class="form-label">Konfirmasi Password Baru</label>
                             <input type="password" class="form-control" id="confirmPassword" required>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" onclick="changePassword()">Ubah
-                        Password</button>
+                    <button type="button" class="btn btn-primary" onclick="changePassword()">Ubah Password</button>
                 </div>
             </div>
         </div>

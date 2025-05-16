@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.mahasiswa')
 
 @section('content')
 <div class="col-md-9 col-lg-10 ms-sm-auto content p-4">
@@ -27,8 +27,7 @@
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h5 class="mt-0">SPP Semester Ganjil 2023/2024</h5>
-                                    <p class="text-muted mb-0">Pembayaran telah diverifikasi dan disetujui
-                                    </p>
+                                    <p class="text-muted mb-0">Pembayaran telah diverifikasi dan disetujui</p>
                                 </div>
                             </div>
                         </div>

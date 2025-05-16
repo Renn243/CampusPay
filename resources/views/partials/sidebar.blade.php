@@ -7,8 +7,7 @@
     </div>
     <div class="sidebar-menu p-3">
         <div class="text-center mb-4">
-            <img src="https://via.placeholder.com/80" alt="User Profile" class="rounded-circle mb-2" />
-            <h6 class="mb-0">Nama Mahasiswa</h6>
+            <h6 class="mb-0">Uzumaki Naruto</h6>
             <small>NIM: 123456789</small>
         </div>
         <nav class="nav flex-column">

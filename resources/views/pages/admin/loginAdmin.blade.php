@@ -2,13 +2,13 @@
 
 @section('content')
 <div id="login-form">
-    <h3>Masuk ke Akun Anda</h3>
+    <h3>Login Admin</h3>
 
     <form action="#" method="post" id="loginForm">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="loginUsername" placeholder="NIM / Email"
+            <input type="text" class="form-control" id="loginUsername" placeholder="Email"
                 required>
-            <label for="loginUsername">NIM / Email</label>
+            <label for="loginUsername">Email</label>
         </div>
 
         <div class="form-floating mb-3 password-field">
@@ -24,9 +24,9 @@
             <div class="col-6">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="rememberMe">
-                    <label class="form-check-label" for="rememberMe">
+                    <!-- <label class="form-check-label" for="rememberMe">
                         Ingat Saya
-                    </label>
+                    </label> -->
                 </div>
             </div>
             <div class="col-6 text-end">
@@ -40,10 +40,5 @@
             </button>
         </div>
     </form>
-
-    <div class="auth-footer">
-        <p>Belum memiliki akun? <a href="register.html">Daftar Sekarang</a>
-        </p>
-    </div>
 </div>
 @endsection
