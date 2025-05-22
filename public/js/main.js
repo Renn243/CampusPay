@@ -8,36 +8,6 @@ function formatRupiah(amount) {
     return 'Rp ' + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
-// Payment
-function proceedToPayment() {
-    alert('Anda akan diarahkan ke halaman pembayaran Midtrans.');
-    const modal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
-    if (modal) modal.hide();
-}
-
-// Save Profile
-function saveProfile() {
-    alert('Profile berhasil diperbarui!');
-    const modal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
-    if (modal) modal.hide();
-}
-
-// Change Password
-function changePassword() {
-    const newPassword = document.getElementById('newPassword').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-
-    if (newPassword !== confirmPassword) {
-        alert('Password baru dan konfirmasi password tidak cocok!');
-        return;
-    }
-
-    alert('Password berhasil diubah!');
-    document.getElementById('passwordForm').reset();
-    const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
-    if (modal) modal.hide();
-}
-
 // Payment Modal
 function showPaymentModal(category, amount) {
     console.log("Menampilkan modal pembayaran:", category, amount);

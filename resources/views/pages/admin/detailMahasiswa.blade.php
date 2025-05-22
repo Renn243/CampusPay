@@ -10,7 +10,6 @@
     </div>
 
     <div class="row">
-        <!-- Sidebar Profil -->
         <div class="col-md-4 mb-4">
             <div class="card text-center">
                 <div class="card-body">
@@ -37,7 +36,6 @@
             </div>
         </div>
 
-        <!-- Info Detail -->
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Informasi Pribadi</div>
@@ -48,9 +46,14 @@
                             <p><i class="bi bi-calendar-event-fill me-2 text-secondary"></i><strong>Tanggal Lahir:</strong><br>
                                 {{ \Carbon\Carbon::parse($mahasiswa->tanggal_lahir)->translatedFormat('d F Y') }}
                             </p>
+                            <p><i class="bi bi-geo-alt me-2 text-secondary"></i><strong>Tempat Lahir:</strong><br> {{ $mahasiswa->tempat_lahir }}</p>
+                            <p><i class="bi bi-gender-ambiguous me-2 text-secondary"></i><strong>Jenis Kelamin:</strong><br> {{ $mahasiswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</p>
                         </div>
                         <div class="col-md-6">
+                            <p><i class="bi bi-bookmark-star-fill me-2 text-secondary"></i><strong>Agama:</strong><br> {{ ucfirst($mahasiswa->agama) }}</p>
                             <p><i class="bi bi-geo-alt-fill me-2 text-secondary"></i><strong>Alamat:</strong><br> {{ $mahasiswa->alamat }}</p>
+                            <p><i class="bi bi-telephone-fill me-2 text-secondary"></i><strong>No. Telp:</strong><br> {{ $mahasiswa->no_telp }}</p>
+                            <p><i class="bi bi-envelope-fill me-2 text-secondary"></i><strong>Email:</strong><br> {{ $mahasiswa->user->email }}</p>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end mt-3">
@@ -61,6 +64,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 @endsection

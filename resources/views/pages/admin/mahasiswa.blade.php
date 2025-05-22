@@ -69,9 +69,6 @@
                                     <button class="btn btn-sm btn-warning">
                                         <i class="bi bi-pencil"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -115,12 +112,45 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="email" class="form-label required-field">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-                        <div class="col-md-6">
                             <label for="nama_lengkap" class="form-label required-field">Nama Lengkap</label>
                             <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="no_telp" class="form-label required-field">No. Telepon</label>
+                            <input type="text" class="form-control" id="no_telp" name="no_telp" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
+                            <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
+                            <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="jenis_kelamin" class="form-label required-field">Jenis Kelamin</label>
+                            <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
+                                <option value="" selected disabled>Pilih Jenis Kelamin</option>
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="agama" class="form-label required-field">Agama</label>
+                            <select class="form-select" id="agama" name="agama" required>
+                                <option value="" selected disabled>Pilih Agama</option>
+                                <option value="islam">Islam</option>
+                                <option value="kristen">Kristen</option>
+                                <option value="katolik">Katolik</option>
+                                <option value="hindu">Hindu</option>
+                                <option value="buddha">Buddha</option>
+                                <option value="konghucu">Konghucu</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -129,8 +159,8 @@
                             <input type="nim" class="form-control" id="nim" name="nim" required>
                         </div>
                         <div class="col-md-6">
-                            <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
-                            <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir">
+                            <label for="email" class="form-label required-field">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -170,7 +200,7 @@
                             <label for="status" class="form-label required-field">Status</label>
                             <select class="form-select" id="status" name="status" required>
                                 <option value="aktif" selected>Aktif</option>
-                                <option value="nonaktif">Non-Aktif</option>
+                                <option value="non-aktif">Non-Aktif</option>
                             </select>
                         </div>
                     </div>

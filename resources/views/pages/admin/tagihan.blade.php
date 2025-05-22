@@ -65,7 +65,7 @@
                                         data-bs-target="#editJadwalTagihanModal">
                                         <i class="bi bi-pencil"></i>
                                     </button>
-                                    <form action="{{ route('admin.deleteTagihan', $item->id_tagihan) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus tagihan ini?')" style="display:inline">
+                                    <form action="{{ route('admin.deleteTagihan', $item->id_tagihan) }}" method="POST" onsubmit="return confirm('Hapus tagihan ini?')" style="display:inline">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-sm btn-danger" title="Hapus" type="submit">

@@ -65,7 +65,7 @@
                                     <form action="{{ route('admin.deletePengumuman', $item->id_pengumuman) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus pengumuman?')">
+                                        <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus pengumuman ini?')">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>

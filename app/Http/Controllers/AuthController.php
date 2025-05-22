@@ -23,7 +23,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             // USER fields
             'username'       => 'required|string|unique:users',
-            'password'       => 'required|string|min:8|confirmed',
+            'password'       => 'required|string|min:8',
             'email'          => 'required|string|email|unique:users',
             'nama_lengkap'   => 'required|string',
 
@@ -32,8 +32,8 @@ class AuthController extends Controller
             'tanggal_lahir'  => 'required|date',
             'jenis_kelamin'  => 'required|in:L,P',
             'tempat_lahir'   => 'required|string',
-            'not_telp'       => 'required|string|max:16',
-            'agama'          => 'required|in:Islam,Kristen,Katolik,Hindu,Buddha,Konghucu,Lainnya',
+            'no_telp'       => 'required|string|max:16',
+            'agama'          => 'required|in:islam,kristen,katolik,hindu,buddha,konghucu,lainnya',
             'fakultas'       => 'required|in:teknik,ekonomi,kedokteran,hukum,fisip',
             'program_studi'  => 'required|in:teknik informatika,teknik sipil,teknik elektro',
             'angkatan'       => 'required|in:2023,2022,2021,2020',
