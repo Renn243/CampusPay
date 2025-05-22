@@ -11,7 +11,7 @@
             <small>NIM: 123456789</small>
         </div>
         <nav class="nav flex-column">
-            <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">
+            <a class="nav-link {{ request()->is('beranda') ? 'active' : '' }}" href="{{ url('beranda') }}">
                 <i class="bi bi-house-door"></i> Beranda
             </a>
             <a class="nav-link {{ request()->is('pembayaran') ? 'active' : '' }}" href="{{ url('pembayaran') }}">

@@ -5,35 +5,22 @@
     <div id="detailPembayaran" class="page">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Detail Pembayaran</h2>
-            <button class="btn btn-outline-secondary">
+            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left"></i> Kembali
-            </button>
+            </a>
         </div>
 
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Informasi Pembayaran</h5>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <!-- <div class="mb-3">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0">
-                                    <i class="bi bi-receipt text-primary fs-2"></i>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <h5 class="mt-0"></h5>
-                                </div>
-                            </div>
-                        </div> -->
-
-                        <table class="table table-borderless">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Informasi Pembayaran</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless mb-0">
                             <tr>
-                                <td width="40%"><strong>ID Pembayaran</strong></td>
-                                <td>: {{ $transaksi->order_id }}</td>
+                                <td width="45%"><strong>ID Pembayaran</strong></td>
+                                <td>: {{ $transaksi->id_transaksi }}</td>
                             </tr>
                             <tr>
                                 <td><strong>Tanggal Pembayaran</strong></td>
@@ -49,7 +36,7 @@
                                     @if ($transaksi->status === 'sukses')
                                     <span class="badge bg-success">Sukses</span>
                                     @elseif ($transaksi->status === 'pending')
-                                    <span class="badge bg-warning">Pending</span>
+                                    <span class="badge bg-warning text-dark">Pending</span>
                                     @else
                                     <span class="badge bg-danger">Gagal</span>
                                     @endif
@@ -57,39 +44,54 @@
                             </tr>
                         </table>
 
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="card bg-light">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span>Nominal Pembayaran</span>
-                                    <span>Rp {{ number_format($transaksi->jumlah_bayar, 0, ',', '.') }}</span>
-                                </div>
-                                <hr>
-                                <div class="d-flex justify-content-between">
-                                    <span class="fw-bold">Total Dibayar</span>
-                                    <span class="fw-bold">Rp {{ number_format($transaksi->jumlah_bayar, 0, ',', '.') }}</span>
-                                </div>
+                        <div class="mt-3 p-3 bg-light rounded">
+                            <div class="d-flex justify-content-between">
+                                <span><strong>Nominal Pembayaran</strong></span>
+                                <span class="text-primary fw-bold">Rp {{ number_format($transaksi->jumlah_bayar, 0, ',', '.') }}</span>
                             </div>
                         </div>
-
-                        <!-- <div class="text-center mt-3">
-                            <a href="{{ asset('storage/' . $transaksi->foto_bukti_transaksi) }}" class="btn btn-outline-primary" download>
-                                <i class="bi bi-download me-2"></i> Unduh Bukti Pembayaran
-                            </a>
-                        </div> -->
                     </div>
                 </div>
+            </div>
 
-                <!-- <div class="row">
-                    <div class="col-md-12">
-                        <h5>Bukti Pembayaran</h5>
-                        <div class="text-center">
-                            <img src="{{ asset('storage/' . $transaksi->foto_bukti_transaksi) }}" alt="Bukti Pembayaran" class="img-fluid border rounded">
-                        </div>
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Informasi Tagihan</h5>
                     </div>
-                </div> -->
+                    <div class="card-body">
+                        <table class="table table-borderless mb-0">
+                            <tr>
+                                <td width="45%"><strong>Nama Tagihan</strong></td>
+                                <td>: {{ $transaksi->tagihan->nama_tagihan ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Kategori</strong></td>
+                                <td>: {{ $transaksi->tagihan->kategori ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tanggal Mulai</strong></td>
+                                <td>:
+                                    {{ $transaksi->tagihan->tanggal_mulai
+                                        ? \Carbon\Carbon::parse($transaksi->tagihan->tanggal_mulai)->translatedFormat('d F Y')
+                                        : '-' }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tanggal Batas</strong></td>
+                                <td>:
+                                    {{ $transaksi->tagihan->tanggal_batas
+                                        ? \Carbon\Carbon::parse($transaksi->tagihan->tanggal_batas)->translatedFormat('d F Y')
+                                        : '-' }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Angkatan</strong></td>
+                                <td>: {{ $transaksi->tagihan->angkatan ?? '-' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

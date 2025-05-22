@@ -26,10 +26,7 @@ class TransaksiController extends Controller
 
         // Pastikan user adalah mahasiswa
         if (!$user || !$user->mahasiswa) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Mahasiswa tidak ditemukan atau belum login.'
-            ], 401);
+            return redirect()->back()->with('error', 'Mahasiswa tidak ditemukan atau belum login');
         }
 
         $mahasiswa = $user->mahasiswa;
@@ -43,10 +40,7 @@ class TransaksiController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
-        return response()->json([
-            'success' => true,
-            'data' => $transaksi
-        ]);
+        return view('pages.mahasiswa.riwayat', compact('transaksi'));
     }
 
 
@@ -62,13 +56,10 @@ class TransaksiController extends Controller
             ->first();
 
         if (!$transaksi) {
-            return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
+            return redirect()->back()->with('error', 'Transaksi tidak ditemukan');
         }
 
-        return response()->json([
-            'success' => true,
-            'data' => $transaksi
-        ]);
+        return view('pages.mahasiswa.detailPembayaran', compact('transaksi'));
     }
 
     //untuk file pembayaran.blade.php saat tekan bayar
@@ -121,7 +112,7 @@ class TransaksiController extends Controller
                 'success'     => true,
                 'snap_token'  => $snapToken,
                 'order_id'    => $orderId,
-                'id' => $transaksi -> id_transaksi
+                'id' => $transaksi->id_transaksi
             ]);
         } catch (\Exception $e) {
             return response()->json([

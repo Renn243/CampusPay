@@ -29,7 +29,7 @@ class PembayaranController extends Controller
         $user = Auth::user();
 
         if (!$user || !$user->mahasiswa) {
-            return redirect()->route('home')->withErrors('Mahasiswa tidak ditemukan atau belum login.');
+            return redirect()->back()->withErrors('Mahasiswa tidak ditemukan atau belum login.');
         }
 
         $mahasiswa = $user->mahasiswa;
@@ -54,7 +54,7 @@ class PembayaranController extends Controller
             ->first();
 
         if (!$transaksi) {
-            return redirect()->route('transaksi.index')->withErrors('Transaksi tidak ditemukan.');
+            return redirect()->back()->withErrors('Transaksi tidak ditemukan.');
         }
 
         return view('pages.mahasiswa.detailPembayaran', compact('transaksi'));

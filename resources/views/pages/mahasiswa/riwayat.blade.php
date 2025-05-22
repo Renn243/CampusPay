@@ -32,21 +32,21 @@
                         <tbody>
                             @forelse ($transaksi as $item)
                             <tr>
-                                <td>{{ $item->kode_pembayaran ?? 'N/A' }}</td>
+                                <td>{{ $item->id_transaksi ?? 'N/A' }}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</td>
                                 <td>{{ $item->tagihan->nama_tagihan ?? 'N/A' }}</td>
-                                <td>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($item->jumlah_bayar, 0, ',', '.') }}</td>
                                 <td>
-                                    @if ($item->status === 'disetujui')
-                                    <span class="badge bg-success">Disetujui</span>
-                                    @elseif ($item->status === 'menunggu')
-                                    <span class="badge bg-warning text-dark">Menunggu</span>
+                                    @if ($item->status === 'sukses')
+                                    <span class="badge bg-success">Sukses</span>
+                                    @elseif ($item->status === 'pending')
+                                    <span class="badge bg-warning text-dark">Pending</span>
                                     @else
-                                    <span class="badge bg-danger">Ditolak</span>
+                                    <span class="badge bg-danger">Gagal</span>
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('detailPembayaran', ['id' => $item->id]) }}">
+                                    <a href="{{ route('detailPembayaran', ['id' => $item->id_transaksi]) }}">
                                         <button class="btn btn-sm btn-primary">Detail</button>
                                     </a>
                                 </td>
