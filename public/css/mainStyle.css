@@ -1,0 +1,259 @@
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.sidebar {
+    min-height: 100vh;
+    background-color: #343a40;
+    color: white;
+    position: fixed;
+    transition: all 0.3s;
+    z-index: 1000;
+}
+
+.content {
+    transition: all 0.3s;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.nav-link i {
+    margin-right: 10px;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border: none;
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    font-weight: bold;
+}
+
+.announcement-card {
+    border-left: 4px solid var(--primary-color);
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.status-pending {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.status-approved {
+    background-color: #198754;
+    color: white;
+}
+
+.status-rejected {
+    background-color: #dc3545;
+    color: white;
+}
+
+.profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        min-height: auto;
+    }
+
+    .content {
+        margin-left: 0 !important;
+    }
+
+    .mobile-menu {
+        display: block !important;
+    }
+
+    .sidebar-menu {
+        display: none;
+    }
+
+    .sidebar.show .sidebar-menu {
+        display: block;
+    }
+}
+
+.modal {
+    z-index: 9999 !important;
+    display: none;
+}
+
+.modal.show {
+    display: block !important;
+}
+
+.modal-backdrop {
+    z-index: 9998 !important;
+}
+
+.modal-dialog {
+    z-index: 10000 !important;
+    margin: 1.75rem auto;
+    max-width: 500px;
+    pointer-events: all;
+    transform: translateY(0);
+    transition: transform 0.3s ease-out;
+}
+
+.modal.fade .modal-dialog {
+    transform: translateY(-50px);
+}
+
+.modal.show .modal-dialog {
+    transform: translateY(0);
+}
+
+.modal-content {
+    visibility: visible !important;
+    opacity: 1 !important;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.modal-header.bg-primary {
+    background-color: #0d6efd !important;
+    color: white !important;
+    border-bottom: none;
+    padding: 1.5rem;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: none;
+    padding: 1rem 1.5rem 1.5rem;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.modal.show .modal-content {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal.show .modal-dialog {
+    animation: slideIn 0.3s ease-out;
+}
+
+.modal .btn-primary {
+    background-color: #0d6efd;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.modal .btn-primary:hover {
+    background-color: #0b5ed7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.2);
+}
+
+.modal .btn-secondary {
+    background-color: #f8f9fa;
+    border: none;
+    color: #212529;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.modal .btn-secondary:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+}
+
+.modal .card {
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.modal .bi-credit-card-2-front {
+    color: #0d6efd;
+    font-size: 4rem !important;
+    margin-bottom: 1rem;
+    display: inline-block;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.modal .alert-info {
+    background-color: #e7f5ff;
+    border-color: #b8daff;
+    color: #0c63e4;
+    border-radius: 10px;
+}

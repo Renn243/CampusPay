@@ -1,0 +1,242 @@
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.sidebar {
+    min-height: 100vh;
+    background-color: #343a40;
+    color: white;
+    position: fixed;
+    transition: all 0.3s;
+    z-index: 1000;
+}
+
+.content {
+    transition: all 0.3s;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.nav-link i {
+    margin-right: 10px;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border: none;
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    font-weight: bold;
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.status-pending {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.status-approved {
+    background-color: #198754;
+    color: white;
+}
+
+.status-rejected {
+    background-color: #dc3545;
+    color: white;
+}
+
+.dashboard-card {
+    border-left: 4px solid var(--primary-color);
+    transition: transform 0.3s;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+.dashboard-card.success {
+    border-left-color: var(--success-color);
+}
+
+.dashboard-card.warning {
+    border-left-color: var(--warning-color);
+}
+
+.dashboard-card.danger {
+    border-left-color: var(--danger-color);
+}
+
+.dashboard-card.info {
+    border-left-color: var(--info-color);
+}
+
+.dashboard-icon {
+    font-size: 2.5rem;
+    opacity: 0.8;
+}
+
+.table th {
+    font-weight: 600;
+    color: #495057;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.action-buttons .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-box i {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: #6c757d;
+}
+
+.search-box input {
+    padding-left: 35px;
+    border-radius: 20px;
+}
+
+.filter-dropdown {
+    min-width: 200px;
+}
+
+.page-header {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 1rem;
+}
+
+.page-header h2 {
+    margin-bottom: 0.5rem;
+}
+
+.breadcrumb {
+    margin-bottom: 0;
+}
+
+.form-label {
+    font-weight: 500;
+}
+
+.required-field::after {
+    content: " *";
+    color: var(--danger-color);
+}
+
+.modal-header {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.modal-header .btn-close {
+    color: white;
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.announcement-preview {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.nav-tabs .nav-link {
+    color: var(--secondary-color);
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.dropdown-menu {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border: none;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+.dropdown-item i {
+    margin-right: 0.5rem;
+    color: var(--secondary-color);
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        min-height: auto;
+    }
+
+    .content {
+        margin-left: 0 !important;
+    }
+
+    .mobile-menu {
+        display: block !important;
+    }
+
+    .sidebar-menu {
+        display: none;
+    }
+
+    .sidebar.show .sidebar-menu {
+        display: block;
+    }
+
+    .dashboard-stats .col-md-3 {
+        margin-bottom: 1rem;
+    }
+}
