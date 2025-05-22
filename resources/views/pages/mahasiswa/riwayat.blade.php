@@ -30,73 +30,39 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @forelse ($transaksi as $item)
                             <tr>
-                                <td>PAY-20230815-001</td>
-                                <td>15 Agustus 2023</td>
-                                <td>SPP Semester Ganjil</td>
-                                <td>Rp 5.000.000</td>
-                                <td><span class="badge bg-success">Disetujui</span></td>
+                                <td>{{ $item->kode_pembayaran ?? 'N/A' }}</td>
+                                <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</td>
+                                <td>{{ $item->tagihan->nama_tagihan ?? 'N/A' }}</td>
+                                <td>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
                                 <td>
-                                    <a href="{{ url('detailPembayaran') }}"><button class="btn btn-sm btn-primary">Detail</button></a>
+                                    @if ($item->status === 'disetujui')
+                                    <span class="badge bg-success">Disetujui</span>
+                                    @elseif ($item->status === 'menunggu')
+                                    <span class="badge bg-warning text-dark">Menunggu</span>
+                                    @else
+                                    <span class="badge bg-danger">Ditolak</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ route('detailPembayaran', ['id' => $item->id]) }}">
+                                        <button class="btn btn-sm btn-primary">Detail</button>
+                                    </a>
                                 </td>
                             </tr>
+                            @empty
                             <tr>
-                                <td>PAY-20230720-002</td>
-                                <td>20 Juli 2023</td>
-                                <td>KKN</td>
-                                <td>Rp 2.500.000</td>
-                                <td><span class="badge bg-success">Disetujui</span></td>
-                                <td>
-                                    <a href="{{ url('detailPembayaran') }}"><button class="btn btn-sm btn-primary">Detail</button></a>
-                                </td>
+                                <td colspan="6" class="text-center">Tidak ada data pembayaran.</td>
                             </tr>
-                            <tr>
-                                <td>PAY-20230905-003</td>
-                                <td>5 September 2023</td>
-                                <td>Ujian Proposal</td>
-                                <td>Rp 750.000</td>
-                                <td><span class="badge bg-warning text-dark">Menunggu</span></td>
-                                <td>
-                                    <a href="{{ url('detailPembayaran') }}"><button class="btn btn-sm btn-primary">Detail</button></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>PAY-20230610-004</td>
-                                <td>10 Juni 2023</td>
-                                <td>Praktikum</td>
-                                <td>Rp 1.200.000</td>
-                                <td><span class="badge bg-success">Disetujui</span></td>
-                                <td>
-                                    <a href="{{ url('detailPembayaran') }}"><button class="btn btn-sm btn-primary">Detail</button></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>PAY-20230505-005</td>
-                                <td>5 Mei 2023</td>
-                                <td>SPP Semester Genap</td>
-                                <td>Rp 5.000.000</td>
-                                <td><span class="badge bg-success">Disetujui</span></td>
-                                <td>
-                                    <a href="{{ url('detailPembayaran') }}"><button class="btn btn-sm btn-primary">Detail</button></a>
-                                </td>
-                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
 
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="{{ url('#') }}" tabindex="-1" aria-disabled="true">Previous</a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="{{ url('#') }}">1</a></li>
-                        <li class="page-item"><a class="page-link" href="{{ url('#') }}">2</a></li>
-                        <li class="page-item"><a class="page-link" href="{{ url('#') }}">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="{{ url('#') }}">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+                <div class="d-flex justify-content-center mt-3">
+                    {{ $transaksi->links('pagination::bootstrap-5') }}
+                </div>
             </div>
         </div>
     </div>

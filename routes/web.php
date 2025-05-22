@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\mahasiswa\PembayaranController;
 use App\Http\Controllers\admin\AdminTransaksiController;
 use App\Http\Controllers\admin\AdminMahasiswaController;
 use App\Http\Controllers\admin\AdminPengumumanController;
@@ -13,10 +14,11 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 
 // route mahasiswa
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
+
     Route::view('/beranda', 'pages.mahasiswa.beranda')->name('beranda');
     Route::view('/pembayaran', 'pages.mahasiswa.pembayaran')->name('pembayaran');
-    Route::view('/riwayat', 'pages.mahasiswa.riwayat')->name('riwayat');
-    Route::view('/detailPembayaran', 'pages.mahasiswa.detailPembayaran')->name('detailPembayaran');
+    Route::get('/riwayat', [PembayaranController::class, 'index'])->name('riwayat');
+    Route::view('/riwayat/{id}', [PembayaranController::class, 'show'])->name('detailPembayaran');
     Route::get('/profile', [MahasiswaController::class, 'get'])->name('profile');
 });
 

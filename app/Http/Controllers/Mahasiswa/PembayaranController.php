@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Mahasiswa;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -13,7 +14,7 @@ use Midtrans\Snap;
 use Midtrans\Transaction;
 use PDF;
 
-class TransaksiWebController extends Controller
+class PembayaranController extends Controller
 {
     public function __construct()
     {
@@ -34,12 +35,12 @@ class TransaksiWebController extends Controller
         $mahasiswa = $user->mahasiswa;
         $perPage = $request->query('per_page', 10);
 
-        $transaksis = Transaksi::with(['mahasiswa', 'tagihan'])
+        $transaksi = Transaksi::with(['mahasiswa', 'tagihan'])
             ->where('id_mahasiswa', $mahasiswa->id_mahasiswa)
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
-        return view('pembayaran', compact('transaksis'));
+        return view('pages.mahasiswa.riwayat', compact('transaksi'));
     }
 
     public function show($id_transaksi)
@@ -56,7 +57,7 @@ class TransaksiWebController extends Controller
             return redirect()->route('transaksi.index')->withErrors('Transaksi tidak ditemukan.');
         }
 
-        return view('detailPembayaran', compact('transaksi'));
+        return view('pages.mahasiswa.detailPembayaran', compact('transaksi'));
     }
 
     public function transaksiWithMidtrans(Request $request, $id_transaksi)
@@ -152,7 +153,6 @@ class TransaksiWebController extends Controller
             }
 
             return back()->withErrors('Status transaksi dari Midtrans tidak lengkap.');
-
         } catch (\Exception $e) {
             Log::error('Midtrans API error: ' . $e->getMessage());
             return back()->withErrors('Gagal mengambil status transaksi dari Midtrans.');
