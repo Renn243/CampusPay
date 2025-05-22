@@ -7,80 +7,55 @@
 
         <div class="row">
             <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h5>Uzumaki Naruto</h5>
-                        <p class="text-muted">NIM: 123456789</p>
-                        <p class="mb-1"><i class="bi bi-envelope me-2"></i>uzumakinaruto@email.com</p>
-                        <p class="mb-1"><i class="bi bi-telephone me-2"></i>+62 812-1234-5678</p>
-                        <p><i class="bi bi-geo-alt me-2"></i>Makassar, Indonesia</p>
+                <div class="card text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi bi-person-circle" style="font-size: 4rem;"></i>
+                        </div>
+                        {{-- Nama Mahasiswa --}}
+                        <h5>{{ $user->mahasiswa->nama_mahasiswa ?? 'Tidak tersedia' }}</h5>
+                        {{-- NIM --}}
+                        <p class="text-muted mb-1">NIM: {{ $user->mahasiswa->nim ?? '-' }}</p>
+                        <div class="d-flex justify-content-center mt-2">
+                            <span class="badge {{ strtolower($user->mahasiswa->status ?? '') == 'aktif' ? 'bg-success' : 'bg-danger' }} me-2">
+                                {{ $user->mahasiswa->status ?? '-' }}
+                            </span>
+                            <span class="badge bg-primary">{{ $user->mahasiswa->angkatan ?? '-' }}</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="card mt-4">
-                    <div class="card-header">Informasi Akademik</div>
+                    <div class="card-header">Akademik</div>
                     <div class="card-body">
-                        <p class="mb-2"><strong>Fakultas:</strong> Teknik</p>
-                        <p class="mb-2"><strong>Program Studi:</strong> Teknik Informatika</p>
-                        <p class="mb-2"><strong>Angkatan:</strong> 2020</p>
-                        <p class="mb-2"><strong>Semester:</strong> 7</p>
-                        <p class="mb-0"><strong>Status:</strong> <span class="badge bg-success">Aktif</span>
-                        </p>
+                        <p><i class="bi bi-mortarboard-fill me-2 text-primary"></i><strong>Fakultas:</strong><br> {{ $user->mahasiswa->fakultas ?? '-' }}</p>
+                        <p><i class="bi bi-journal-code me-2 text-primary"></i><strong>Program Studi:</strong><br> {{ $user->mahasiswa->program_studi ?? '-' }}</p>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-8">
-                <div class="card border-0 shadow-sm">
+                <div class="card">
+                    <div class="card-header">Informasi Pribadi</div>
                     <div class="card-body">
-                        <h4 class="card-title mb-4">Informasi Mahasiswa</h4>
-
-                        <div class="row mb-4">
+                        <div class="row g-3">
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label text-muted">Nama Lengkap</label>
-                                    <h6>Nama Mahasiswa</h6>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label text-muted">NIM</label>
-                                    <h6>123456789</h6>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label text-muted">Program Studi</label>
-                                    <h6>Teknik Informatika</h6>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label text-muted">Fakultas</label>
-                                    <h6>Ilmu Komputer</h6>
-                                </div>
+                                <p><i class="bi bi-person-fill me-2 text-secondary"></i><strong>Nama:</strong><br> {{ $user->mahasiswa->nama_mahasiswa ?? '-' }}</p>
+                                <p><i class="bi bi-calendar-event-fill me-2 text-secondary"></i><strong>Tanggal Lahir:</strong><br>
+                                    {{ $user->mahasiswa->tanggal_lahir ? \Carbon\Carbon::parse($user->mahasiswa->tanggal_lahir)->translatedFormat('d F Y') : '-' }}
+                                </p>
+                                <p><i class="bi bi-geo-alt me-2 text-secondary"></i><strong>Tempat Lahir:</strong><br> {{ $user->mahasiswa->tempat_lahir ?? '-' }}</p>
+                                <p><i class="bi bi-gender-ambiguous me-2 text-secondary"></i><strong>Jenis Kelamin:</strong><br>
+                                    {{ isset($user->mahasiswa->jenis_kelamin) ? ($user->mahasiswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan') : '-' }}
+                                </p>
                             </div>
-
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label text-muted">Email</label>
-                                    <h6>uzumakinaruto@email.com</h6>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label text-muted">Nomor Telepon</label>
-                                    <h6>+62 812-1234-5678</h6>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label text-muted">Alamat</label>
-                                    <h6>Jl. Semangka</h6>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label text-muted">Tanggal Lahir</label>
-                                    <h6>01 Januari 2000</h6>
-                                </div>
+                                <p><i class="bi bi-bookmark-star-fill me-2 text-secondary"></i><strong>Agama:</strong><br> {{ $user->mahasiswa->agama ? ucfirst($user->mahasiswa->agama) : '-' }}</p>
+                                <p><i class="bi bi-geo-alt-fill me-2 text-secondary"></i><strong>Alamat:</strong><br> {{ $user->mahasiswa->alamat ?? '-' }}</p>
+                                <p><i class="bi bi-telephone-fill me-2 text-secondary"></i><strong>No. Telp:</strong><br> {{ $user->mahasiswa->no_telp ?? '-' }}</p>
+                                <p><i class="bi bi-envelope-fill me-2 text-secondary"></i><strong>Email:</strong><br> {{ $user->email ?? '-' }}</p>
                             </div>
                         </div>
-
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                                 <i class="bi bi-pencil-square me-2"></i> Edit Profile
@@ -90,31 +65,6 @@
                             </button>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Change Photo Modal -->
-    <div class="modal fade" id="changePhotoModal" tabindex="-1" aria-labelledby="changePhotoModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="changePhotoModalLabel">Ubah Foto Profile</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center mb-3">
-                        <img src="https://via.placeholder.com/150" alt="Current Profile" class="profile-img mb-3">
-                    </div>
-                    <div class="mb-3">
-                        <label for="profilePhoto" class="form-label">Pilih Foto Baru</label>
-                        <input type="file" class="form-control" id="profilePhoto" accept="image/*">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary">Simpan</button>
                 </div>
             </div>
         </div>

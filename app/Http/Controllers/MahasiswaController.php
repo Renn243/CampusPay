@@ -13,18 +13,14 @@ class MahasiswaController extends Controller
     //tampilkan di profile.blade.php
     public function get()
     {
-        $user = auth()->user();
+        $user = auth()->user()->load('mahasiswa');
 
         if (!$user || !$user->mahasiswa) {
-            return response()->json(['message' => 'Mahasiswa tidak ditemukan atau belum login'], 404);
+            return redirect()->back()->with('error', 'Mahasiswa tidak ditemukan atau belum login');
         }
 
-        return response()->json([
-            'success' => true,
-            'data' => $user 
-        ]);
+        return view('pages.mahasiswa.profile', compact('user'));
     }
-
 
     //fungsi update edit password/akun
     public function updateAkun(Request $request)
@@ -76,8 +72,15 @@ class MahasiswaController extends Controller
 
         $user->mahasiswa->update(
             $request->only([
-                'nim', 'nama_mahasiswa', 'tanggal_lahir', 'agama',
-                'fakultas', 'program_studi', 'angkatan', 'alamat', 'status'
+                'nim',
+                'nama_mahasiswa',
+                'tanggal_lahir',
+                'agama',
+                'fakultas',
+                'program_studi',
+                'angkatan',
+                'alamat',
+                'status'
             ])
         );
 

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TagihanController;
+use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\admin\AdminTransaksiController;
 use App\Http\Controllers\admin\AdminMahasiswaController;
 use App\Http\Controllers\admin\AdminPengumumanController;
@@ -10,17 +11,16 @@ use App\Http\Controllers\admin\AdminPengumumanController;
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 
-Route::view('/', 'pages.mahasiswa.beranda')->name('beranda');
-Route::view('/pembayaran', 'pages.mahasiswa.pembayaran')->name('pembayaran');
-Route::view('/riwayat', 'pages.mahasiswa.riwayat')->name('riwayat');
-Route::view('/detailPembayaran', 'pages.mahasiswa.detailPembayaran')->name('detailPembayaran');
-Route::view('/profile', 'pages.mahasiswa.profile')->name('profile');
-
 // route mahasiswa
-// Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
-// });
+Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
+    Route::view('/beranda', 'pages.mahasiswa.beranda')->name('beranda');
+    Route::view('/pembayaran', 'pages.mahasiswa.pembayaran')->name('pembayaran');
+    Route::view('/riwayat', 'pages.mahasiswa.riwayat')->name('riwayat');
+    Route::view('/detailPembayaran', 'pages.mahasiswa.detailPembayaran')->name('detailPembayaran');
+    Route::get('/profile', [MahasiswaController::class, 'get'])->name('profile');
+});
 
-// route admin
+// route admin  
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
     // halaman statis
