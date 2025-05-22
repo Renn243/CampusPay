@@ -51,10 +51,7 @@
                             <td>{{ $item->angkatan }}</td>
                             <td>
                                 <div class="action-buttons d-flex gap-1">
-                                    <!-- <a href="{{ route('admin.detailTagihan', $item->id_tagihan) }}" class="btn btn-sm btn-primary" title="Detail">
-                                        <i class="bi bi-eye"></i>
-                                    </a> -->
-                                    <a href="#"
+                                    <button
                                         class="btn btn-sm btn-warning btn-edit-tagihan"
                                         data-id="{{ $item->id_tagihan }}"
                                         data-nama="{{ $item->nama_tagihan }}"
@@ -67,7 +64,7 @@
                                         data-bs-toggle="modal"
                                         data-bs-target="#editJadwalTagihanModal">
                                         <i class="bi bi-pencil"></i>
-                                    </a>
+                                    </button>
                                     <form action="{{ route('admin.deleteTagihan', $item->id_tagihan) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus tagihan ini?')" style="display:inline">
                                         @csrf
                                         @method('DELETE')
@@ -231,15 +228,15 @@
                 const batasWaktu = this.dataset.batas_waktu;
                 const angkatan = this.dataset.angkatan;
 
-                document.getElementById('edit_id').value = id;
-                document.getElementById('edit_nama_tagihan').value = nama;
-                document.getElementById('kategori').value = kategori;
-                document.getElementById('nominal').value = nominal;
-                document.getElementById('tanggal_mulai').value = tanggalMulai;
-                document.getElementById('tanggal_batas').value = batasWaktu;
-                document.getElementById('angkatan').value = angkatan;
+                document.querySelector('#edit_id').value = id;
+                document.querySelector('#edit_nama_tagihan').value = nama;
+                document.querySelector('#kategori').value = kategori;
+                document.querySelector('#nominal').value = nominal;
+                document.querySelector('#tanggal_mulai').value = tanggalMulai;
+                document.querySelector('#tanggal_batas').value = batasWaktu;
+                document.querySelector('#angkatan').value = angkatan;
 
-                document.getElementById('editTagihanForm').action = `/admin/tagihan/${id}`;
+                document.querySelector('#editTagihanForm').action = `/admin/tagihan/${id}`;
             });
         });
     });

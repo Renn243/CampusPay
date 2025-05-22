@@ -50,10 +50,11 @@ class TagihanController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors'  => $validator->errors()
-            ], 422);
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
         }
 
         // 1. Buat tagihan
@@ -107,10 +108,9 @@ class TagihanController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors'  => $validator->errors()
-            ], 422);
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
         $tagihan->update($request->only([
@@ -133,10 +133,7 @@ class TagihanController extends Controller
         $tagihan = Tagihan::find($id);
 
         if (!$tagihan) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tagihan tidak ditemukan'
-            ], 404);
+            return redirect()->back()->with('error', 'Tagihan tidak ditemukan');
         }
 
         $tagihan->delete();
