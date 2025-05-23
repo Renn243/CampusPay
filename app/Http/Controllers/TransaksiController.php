@@ -62,13 +62,11 @@ class TransaksiController extends Controller
         return view('pages.mahasiswa.detailPembayaran', compact('transaksi'));
     }
 
-    //untuk file pembayaran.blade.php saat tekan bayar
     public function transaksiWithMidtrans(Request $request, $id_transaksi)
     {
         $user = auth()->user();
         $mahasiswa = $user->mahasiswa;
 
-        // 1. Cari transaksi milik mahasiswa dengan status pending
         $transaksi = Transaksi::where('id_transaksi', $id_transaksi)
             ->where('id_mahasiswa', $mahasiswa->id_mahasiswa)
             ->where('status', 'pending')
@@ -78,24 +76,25 @@ class TransaksiController extends Controller
             return response()->json(['message' => 'Transaksi tidak ditemukan atau sudah diproses'], 404);
         }
 
-        // 2. Setup Midtrans config
         Config::$serverKey = env('MIDTRANS_SERVER_KEY');
         Config::$isProduction = env('MIDTRANS_IS_PRODUCTION', false);
         Config::$isSanitized = true;
         Config::$is3ds = true;
 
-        // 3. Buat order_id unik SETIAP REQUEST
-
         if (!$transaksi->order_id) {
             $orderId = 'ORDER-' . time();
             $transaksi->order_id = $orderId;
-            $transaksi->save();
+            $saved = $transaksi->save();
+            if (!$saved) {
+                return response()->json(['message' => 'Gagal menyimpan order_id'], 500);
+            }
+        } else {
+            $orderId = $transaksi->order_id;
         }
 
-        // 4. Siapkan payload Midtrans
         $payload = [
             'transaction_details' => [
-                'order_id'     => $transaksi->order_id,
+                'order_id'     => $orderId,
                 'gross_amount' => $transaksi->jumlah_bayar,
             ],
             'customer_details' => [
@@ -105,7 +104,6 @@ class TransaksiController extends Controller
         ];
 
         try {
-            // 5. Generate snap token
             $snapToken = Snap::getSnapToken($payload);
 
             return response()->json([
@@ -118,7 +116,7 @@ class TransaksiController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal membuat transaksi Midtrans',
-                'error'   =>  "Order ID sudah ada",
+                'error'   => $e->getMessage(),
             ], 500);
         }
     }

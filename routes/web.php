@@ -16,7 +16,9 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
 
     Route::view('/beranda', 'pages.mahasiswa.beranda')->name('beranda');
-    Route::view('/pembayaran', 'pages.mahasiswa.pembayaran')->name('pembayaran');
+    Route::get('/pembayaran', [PembayaranController::class, 'indexPembayaran'])->name('pembayaran');
+    Route::post('/pembayaran/{id_transaksi}', [PembayaranController::class, 'transaksiWithMidtrans'])->name('pembayaranMidtrans');
+    Route::post('/pembayaran/updateStatus/{id_transaksi}', [PembayaranController::class, 'updateStatusTransaksi']);
     Route::get('/riwayat', [PembayaranController::class, 'index'])->name('riwayat');
     Route::get('/riwayat/{id}', [PembayaranController::class, 'show'])->name('detailPembayaran');
     Route::get('/profile', [MahasiswaController::class, 'get'])->name('profile');
@@ -43,7 +45,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/tagihan', [TagihanController::class, 'index'])->name('listTagihan');
     Route::post('/tagihan', [TagihanController::class, 'store'])->name('tambahTagihan');
     Route::delete('/tagihan/{id}', [TagihanController::class, 'destroy'])->name('deleteTagihan');
-    // Route::get('/tagihan/{id}', [TagihanController::class, 'show'])->name('detailTagihan');
     Route::put('/tagihan/{id}', [TagihanController::class, 'update'])->name('updateTagihan');
 
     // Pengumuman

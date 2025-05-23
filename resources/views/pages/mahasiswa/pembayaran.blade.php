@@ -13,95 +13,43 @@
                     </div>
                     <div class="card-body">
                         <div class="list-group">
+                            @foreach ($transaksi as $item)
                             <div class="list-group-item list-group-item-action">
                                 <div class="d-flex w-100 justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="mb-1">SPP Semester Ganjil 2023/2024</h6>
-                                        <p class="mb-1 text-muted small">Batas waktu: 30 Agustus 2023</p>
+                                        <h6 class="mb-1">{{ $item->tagihan->nama_tagihan ?? 'Tagihan' }}</h6>
+                                        <p class="mb-1 text-muted small">Batas waktu: {{ \Carbon\Carbon::parse($item->tagihan->tanggal_batas)->format('d F Y') }}</p>
                                     </div>
                                     <div class="text-end">
-                                        <h5 class="mb-1">Rp 5.000.000</h5>
+                                        <h5 class="mb-1">Rp {{ number_format($item->jumlah_bayar, 0, ',', '.') }}</h5>
+                                        @if($item->status == 'pending')
                                         <span class="badge bg-danger">Belum Dibayar</span>
+                                        @else
+                                        <span class="badge bg-success">Lunas</span>
+                                        @endif
                                     </div>
                                 </div>
+                                @if($item->status == 'pending')
                                 <div class="mt-2 d-grid">
-                                    <button class="btn btn-primary btn-bayar" data-category="SPP Semester Ganjil 2023/2024" data-amount="5000000">
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary btn-bayar"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#paymentModal"
+                                        data-id="{{ $item->id_transaksi }}"
+                                        data-category="{{ $item->tagihan->nama_tagihan }}"
+                                        data-amount="{{ $item->jumlah_bayar }}">
                                         Bayar Sekarang
                                     </button>
                                 </div>
+                                @endif
                             </div>
+                            @endforeach
+                        </div>
 
-                            <div class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">KKN Periode Juli 2023</h6>
-                                        <p class="mb-1 text-muted small">Batas waktu: 15 Agustus 2023</p>
-                                    </div>
-                                    <div class="text-end">
-                                        <h5 class="mb-1">Rp 2.500.000</h5>
-                                        <span class="badge bg-danger">Belum Dibayar</span>
-                                    </div>
-                                </div>
-                                <div class="mt-2 d-grid">
-                                    <button class="btn btn-primary btn-bayar" data-category="KKN Periode Juli 2023" data-amount="2500000">
-                                        Bayar Sekarang
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">Ujian Proposal</h6>
-                                        <p class="mb-1 text-muted small">Batas waktu: 30 September 2023</p>
-                                    </div>
-                                    <div class="text-end">
-                                        <h5 class="mb-1">Rp 750.000</h5>
-                                        <span class="badge bg-danger">Belum Dibayar</span>
-                                    </div>
-                                </div>
-                                <div class="mt-2 d-grid">
-                                    <button class="btn btn-primary btn-bayar" data-category="Ujian Proposal" data-amount="750000">
-                                        Bayar Sekarang
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">Ujian Skripsi</h6>
-                                        <p class="mb-1 text-muted small">Batas waktu: 15 Oktober 2023</p>
-                                    </div>
-                                    <div class="text-end">
-                                        <h5 class="mb-1">Rp 1.500.000</h5>
-                                        <span class="badge bg-danger">Belum Dibayar</span>
-                                    </div>
-                                </div>
-                                <div class="mt-2 d-grid">
-                                    <button class="btn btn-primary btn-bayar" data-category="Ujian Skripsi" data-amount="1500000">
-                                        Bayar Sekarang
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">Biaya Wisuda</h6>
-                                        <p class="mb-1 text-muted small">Batas waktu: 30 November 2023</p>
-                                    </div>
-                                    <div class="text-end">
-                                        <h5 class="mb-1">Rp 3.000.000</h5>
-                                        <span class="badge bg-danger">Belum Dibayar</span>
-                                    </div>
-                                </div>
-                                <div class="mt-2 d-grid">
-                                    <button class="btn btn-primary btn-bayar" data-category="Biaya Wisuda" data-amount="3000000">
-                                        Bayar Sekarang
-                                    </button>
-                                </div>
-                            </div>
+                        {{-- Pagination --}}
+                        <div class="mt-3">
+                            {{ $transaksi->links() }}
                         </div>
                     </div>
                 </div>
@@ -137,14 +85,13 @@
         </div>
     </div>
 
-    <!-- Payment Modal -->
+    <!-- payment modal -->
     <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="paymentModalLabel">Konfirmasi Pembayaran</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="text-center mb-4">
@@ -154,18 +101,9 @@
 
                     <div class="card mb-3">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Nominal Tagihan</span>
-                                <span class="fw-bold" id="paymentAmount">-</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Biaya Admin</span>
-                                <span>Rp 2.500</span>
-                            </div>
-                            <hr>
                             <div class="d-flex justify-content-between">
                                 <span class="fw-bold">Total Pembayaran</span>
-                                <span class="fw-bold text-primary" id="paymentTotal">-</span>
+                                <span class="fw-bold text-primary" id="paymentAmount">-</span>
                             </div>
                         </div>
                     </div>
@@ -177,9 +115,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" onclick="proceedToPayment()">
-                        <i class="bi bi-arrow-right-circle me-2"></i> Lanjutkan Pembayaran
-                    </button>
+                    <button id="pay-button" class="btn btn-primary" data-transaksi-id="">Bayar</button>
                 </div>
             </div>
         </div>

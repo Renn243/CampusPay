@@ -17,7 +17,8 @@ class Transaksi extends Model
         'status',
         'order_id',
         'metode_transaksi',
-        'foto_bukti_transaksi'
+        'foto_bukti_transaksi',
+        'snap_token'
     ];
 
     public function mahasiswa()
