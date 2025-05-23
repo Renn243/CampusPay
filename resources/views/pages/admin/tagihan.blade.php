@@ -15,10 +15,12 @@
                 </div>
                 <div class="col-md-6">
                     <div class="d-flex justify-content-md-end">
-                        <div class="search-box me-2">
-                            <i class="bi bi-search"></i>
-                            <input type="text" class="form-control" placeholder="Cari tagihan...">
-                        </div>
+                        <form method="GET" action="{{ route('admin.listTagihan') }}">
+                            <div class="search-box me-2 d-flex align-items-center">
+                                <i class="bi bi-search me-2"></i>
+                                <input type="text" name="search" class="form-control" placeholder="Cari tagihan..." value="{{ request('search') }}">
+                            </div>
+                        </form>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addJadwalTagihanModal">
                             <i class="bi bi-plus-lg"></i> Tambah
                         </button>
@@ -41,7 +43,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($tagihan as $item)
+                        @forelse ($tagihan as $item)
                         <tr>
                             <td>{{ $item->nama_tagihan }}</td>
                             <td><span class="badge bg-primary">{{ $item->kategori }}</span></td>
@@ -75,7 +77,11 @@
                                 </div>
                             </td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <tr>
+                            <td colspan="7" class="text-center text-muted">Data tagihan tidak tersedia.</td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

@@ -15,10 +15,12 @@
                 </div>
                 <div class="col-md-6">
                     <div class="d-flex justify-content-md-end">
-                        <div class="search-box me-2">
-                            <i class="bi bi-search"></i>
-                            <input type="text" class="form-control" placeholder="Cari pengumuman...">
-                        </div>
+                        <form method="GET" action="{{ route('admin.listPengumuman') }}">
+                            <div class="search-box me-2 d-flex align-items-center">
+                                <i class="bi bi-search me-2"></i>
+                                <input type="text" name="search" class="form-control" placeholder="Cari pengumuman..." value="{{ request('search') }}">
+                            </div>
+                        </form>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPengumumanModal">
                             <i class="bi bi-plus-lg"></i> Tambah
                         </button>
@@ -38,7 +40,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($pengumuman as $item)
+                        @forelse($pengumuman as $item)
                         <tr>
                             <td>{{ $item->judul }}</td>
                             <td>{{ \Carbon\Carbon::parse($item->tanggal_mulai)->translatedFormat('d F Y') }}</td>
@@ -72,7 +74,11 @@
                                 </div>
                             </td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">Data pengumuman tidak tersedia.</td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

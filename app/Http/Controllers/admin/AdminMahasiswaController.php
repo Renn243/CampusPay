@@ -15,16 +15,23 @@ use App\Models\Mahasiswa;
 class AdminMahasiswaController extends Controller
 {
 
-    //menampilkan daftar mahasiswa pagination
     public function index(Request $request)
     {
-        // Ambil jumlah per halaman dari query ?per_page=10, default 10
         $perPage = $request->query('per_page', 10);
+        $search = $request->query('search'); // ambil query parameter 'search'
 
-        $listMahasiswa = Mahasiswa::paginate($perPage);
+        $query = Mahasiswa::query();
 
-        return view('pages.admin.mahasiswa', compact('listMahasiswa'));
+        if ($search) {
+            // filter berdasarkan nama mahasiswa, bisa tambahkan kolom lain jika perlu
+            $query->where('nama_mahasiswa', 'like', '%' . $search . '%');
+        }
+
+        $listMahasiswa = $query->paginate($perPage)->withQueryString();
+
+        return view('pages.admin.mahasiswa', compact('listMahasiswa', 'search'));
     }
+
 
     // Tampilkan detail transaksi tertentu (pembayaran, rincian, dan info tagihan)
     public function show($id)

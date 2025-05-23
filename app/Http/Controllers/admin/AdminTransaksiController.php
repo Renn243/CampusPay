@@ -17,13 +17,24 @@ class AdminTransaksiController extends Controller
     //data pagination
     public function index(Request $request)
     {
-        // Ambil jumlah per halaman dari query ?per_page=10, default 10
         $perPage = $request->query('per_page', 10);
+        $search = $request->query('search');
 
-        $tagihan = Transaksi::with(['mahasiswa', 'tagihan'])->paginate($perPage);
+        $query = Transaksi::with(['mahasiswa', 'tagihan']);
+
+        if ($search) {
+            $query->whereHas('mahasiswa', function ($q) use ($search) {
+                $q->where('nama_mahasiswa', 'like', '%' . $search . '%');
+            })->orWhereHas('tagihan', function ($q) use ($search) {
+                $q->where('nama_tagihan', 'like', '%' . $search . '%');
+            });
+        }
+
+        $tagihan = $query->paginate($perPage)->appends($request->all());
 
         return view('pages.admin.pembayaran', compact('tagihan'));
     }
+
 
     // Tampilkan detail transaksi tertentu (pembayaran, rincian, dan info tagihan)
     public function show($id)

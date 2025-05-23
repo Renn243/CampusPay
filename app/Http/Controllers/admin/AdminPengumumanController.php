@@ -11,7 +11,18 @@ class AdminPengumumanController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->query('per_page', 10);
-        $pengumuman = Pengumuman::paginate($perPage);
+        $search = $request->query('search');
+
+        $query = Pengumuman::query();
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('judul', 'like', '%' . $search . '%');
+            });
+        }
+
+        $pengumuman = $query->paginate($perPage)->appends($request->all());
+
         return view('pages.admin.pengumuman', compact('pengumuman'));
     }
 

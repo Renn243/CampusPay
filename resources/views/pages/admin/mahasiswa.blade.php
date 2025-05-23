@@ -15,10 +15,18 @@
                 </div>
                 <div class="col-md-6">
                     <div class="d-flex justify-content-md-end">
-                        <div class="search-box me-2">
-                            <i class="bi bi-search"></i>
-                            <input type="text" class="form-control" placeholder="Cari mahasiswa...">
-                        </div>
+                        <form method="GET" action="{{ route('admin.listMahasiswa') }}" class="d-flex">
+                            <div class="search-box me-2 position-relative">
+                                <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-2 text-muted"></i>
+                                <input
+                                    type="text"
+                                    name="search"
+                                    class="form-control ps-5"
+                                    placeholder="Cari mahasiswa..."
+                                    value="{{ request('search') }}">
+                            </div>
+                        </form>
+
                         <button class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#addMahasiswaModal">
                             <i class="bi bi-plus-lg"></i> Tambah
@@ -98,6 +106,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+
                 <form method="POST" action="{{ route('admin.register') }}">
                     @csrf
                     <div class="row mb-3">
