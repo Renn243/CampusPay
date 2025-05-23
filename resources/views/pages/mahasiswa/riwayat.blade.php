@@ -12,7 +12,12 @@
                         <h5 class="mb-0">Daftar Pembayaran</h5>
                     </div>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" placeholder="Cari pembayaran...">
+                        <form method="GET" action="{{ url('riwayat') }}">
+                            <div class="position-relative">
+                                <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                                <input type="text" name="q" class="form-control ps-5" placeholder="Cari pembayaran..." value="{{ request('q') }}">
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

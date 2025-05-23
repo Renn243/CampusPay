@@ -46,11 +46,11 @@
                                     </span>
                                 </div>
 
-                                <div class="row mb-4">
+                                <!-- <div class="row mb-4">
                                     <div class="col-6">
                                         <a href="#" class="text-primary">Lupa Password?</a>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-primary">

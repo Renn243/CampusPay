@@ -7,8 +7,8 @@
     </div>
     <div class="sidebar-menu p-3">
         <div class="text-center mb-4">
-            <h6 class="mb-0">Uzumaki Naruto</h6>
-            <small>NIM: 123456789</small>
+            <h6 class="mb-0">{{ Auth::user()->nama_lengkap }}</h6>
+            <small>NIM: {{ Auth::user()->mahasiswa->nim }}</small>
         </div>
         <nav class="nav flex-column">
             <a class="nav-link {{ request()->is('beranda') ? 'active' : '' }}" href="{{ url('beranda') }}">
@@ -23,7 +23,7 @@
             <a class="nav-link {{ request()->is('profile') ? 'active' : '' }}" href="{{ url('profile') }}">
                 <i class="bi bi-person"></i> Profile
             </a>
-            <a class="nav-link" href="{{ url('logout') }}" onclick="return confirm('Apakah Anda yakin ingin keluar?')">
+            <a class="nav-link" href="{{ route('logout') }}" onclick="return confirm('Apakah Anda yakin ingin keluar?')">
                 <i class="bi bi-box-arrow-right"></i> Logout
             </a>
         </nav>

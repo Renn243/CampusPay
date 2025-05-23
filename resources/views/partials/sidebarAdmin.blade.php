@@ -11,7 +11,7 @@
             <small>admin@campus.ac.id</small>
         </div>
         <nav class="nav flex-column">
-            <a class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}" href="{{ url('admin/dashboard') }}">
+            <a class="nav-link {{ request()->is('admin/') ? 'active' : '' }}" href="{{ url('admin/') }}">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
             <a class="nav-link {{ request()->is('admin/mahasiswa') ? 'active' : '' }}" href="{{ url('admin/mahasiswa') }}">
@@ -26,7 +26,7 @@
             <a class="nav-link {{ request()->is('admin/tagihan') ? 'active' : '' }}" href="{{ url('admin/tagihan') }}">
                 <i class="bi bi-calendar-check"></i> Jadwal Tagihan
             </a>
-            <a class="nav-link" href="{{ url('logout') }}" onclick="return confirm('Apakah Anda yakin ingin keluar?')">
+            <a class="nav-link" href="{{ route('logout') }}" onclick="return confirm('Apakah Anda yakin ingin keluar?')">
                 <i class="bi bi-box-arrow-right"></i> Logout
             </a>
         </nav>

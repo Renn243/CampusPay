@@ -32,9 +32,15 @@ class PembayaranController extends Controller
 
         $mahasiswa = $user->mahasiswa;
         $perPage = $request->query('per_page', 10);
+        $search = $request->query('q');
 
         $transaksi = Transaksi::with(['mahasiswa', 'tagihan'])
             ->where('id_mahasiswa', $mahasiswa->id_mahasiswa)
+            ->when($search, function ($query, $search) {
+                $query->whereHas('tagihan', function ($q) use ($search) {
+                    $q->where('nama_tagihan', 'like', '%' . $search . '%');
+                });
+            })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\MahasiswaController;
@@ -9,12 +10,29 @@ use App\Http\Controllers\admin\AdminTransaksiController;
 use App\Http\Controllers\admin\AdminMahasiswaController;
 use App\Http\Controllers\admin\AdminPengumumanController;
 
+// Route redirect
+Route::get('/', function () {
+    if (Auth::check()) {
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            return redirect('/admin');
+        } elseif ($user->role === 'mahasiswa') {
+            return redirect('/beranda');
+        } else {
+            return redirect('/login');
+        }
+    } else {
+        return redirect('/login');
+    }
+});
+
+// Login routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 
-// route mahasiswa
+// Route mahasiswa
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
-
     Route::view('/beranda', 'pages.mahasiswa.beranda')->name('beranda');
     Route::get('/pembayaran', [PembayaranController::class, 'indexPembayaran'])->name('pembayaran');
     Route::post('/pembayaran/{id_transaksi}', [PembayaranController::class, 'transaksiWithMidtrans'])->name('pembayaranMidtrans');
@@ -24,11 +42,9 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('/profile', [MahasiswaController::class, 'get'])->name('profile');
 });
 
-// route admin  
+// Route admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-
-    // halaman statis
-    Route::view('/dashboard', 'pages.admin.dashboard')->name('dashboard');
+    Route::view('/', 'pages.admin.dashboard')->name('dashboard');
 
     // Transaksi
     Route::get('/pembayaran', [AdminTransaksiController::class, 'index'])->name('listPembayaran');
@@ -54,3 +70,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/pengumuman/{id}', [AdminPengumumanController::class, 'update'])->name('editPengumuman');
     Route::delete('/pengumuman/{id}', [AdminPengumumanController::class, 'destroy'])->name('deletePengumuman');
 });
+
+Route::get('/logout', function () {
+    Auth::logout();
+    session()->flush();
+    return redirect('/login');
+})->name('logout');
