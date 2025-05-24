@@ -29,10 +29,6 @@
                                 <td>: {{ $transaksi->id_transaksi }}</td>
                             </tr>
                             <tr>
-                                <td class="fw-semibold">Order ID</td>
-                                <td>: {{ $transaksi->order_id ?? '-' }}</td>
-                            </tr>
-                            <tr>
                                 <td class="fw-semibold">Tanggal Pembayaran</td>
                                 <td>: {{ \Carbon\Carbon::parse($transaksi->tanggal_bayar)->translatedFormat('d F Y') }}</td>
                             </tr>
@@ -57,6 +53,13 @@
                             </tr>
                         </tbody>
                     </table>
+                    @if($transaksi->foto_bukti_transaksi)
+                    <a href="{{ asset($transaksi->foto_bukti_transaksi) }}"
+                        download
+                        class="btn btn-primary mt-4">
+                        Download Bukti Pembayaran
+                    </a>
+                    @endif
                 </div>
 
                 <!-- Informasi Tagihan -->

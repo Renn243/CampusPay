@@ -9,6 +9,7 @@ use App\Http\Controllers\mahasiswa\PembayaranController;
 use App\Http\Controllers\admin\AdminTransaksiController;
 use App\Http\Controllers\admin\AdminMahasiswaController;
 use App\Http\Controllers\admin\AdminPengumumanController;
+use App\Http\Controllers\mahasiswa\DashboardController;
 
 // Route redirect
 Route::get('/', function () {
@@ -34,6 +35,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 // Route mahasiswa
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::view('/beranda', 'pages.mahasiswa.beranda')->name('beranda');
+    Route::get('/beranda', [DashboardController::class, 'indexBeranda'])->name('beranda');
     Route::get('/pembayaran', [PembayaranController::class, 'indexPembayaran'])->name('pembayaran');
     Route::post('/pembayaran/{id_transaksi}', [PembayaranController::class, 'transaksiWithMidtrans'])->name('pembayaranMidtrans');
     Route::post('/pembayaran/updateStatus/{id_transaksi}', [PembayaranController::class, 'updateStatusTransaksi']);
@@ -47,7 +49,7 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
 
 // Route admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::view('/', 'pages.admin.dashboard')->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     // Transaksi
     Route::get('/pembayaran', [AdminTransaksiController::class, 'index'])->name('listPembayaran');

@@ -27,7 +27,7 @@
                                         @elseif($item->status == 'pending')
                                         <span class="badge bg-warning">Pending</span>
                                         @else
-                                        <span class="badge bg-warning">Belum Lunas</span>
+                                        <span class="badge bg-danger">Belum Bayar</span>
                                         @endif
                                     </div>
                                 </div>

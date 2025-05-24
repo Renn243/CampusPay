@@ -56,18 +56,15 @@
                             <td>Rp {{ number_format($item->tagihan->nominal, 0, ',', '.') }}</td>
                             <td>{{ \Carbon\Carbon::parse($item->tanggal_transaksi)->translatedFormat('d F Y') }}</td>
                             <td>
-                                @php
-                                $statusBadge = match(strtolower($item->status)) {
-                                'sukses' => 'success',
-                                'pending' => 'warning',
-                                'gagal' => 'danger',
-                                default => 'secondary',
-                                };
-                                @endphp
-
-                                <span class="badge bg-{{ $statusBadge }}">
-                                    {{ ucfirst($item->status) }}
-                                </span>
+                                @if($item->status == 'lunas')
+                                <span class="badge bg-success">Lunas</span>
+                                @elseif($item->status == 'pending')
+                                <span class="badge bg-warning">Pending</span>
+                                @elseif($item->status == 'belum bayar')
+                                <span class="badge bg-danger">Belum Bayar</span>
+                                @else
+                                <span class="badge bg-danger">ditolak</span>
+                                @endif
                             </td>
                             <td>
                                 <div class="action-buttons d-flex gap-1 align-items-center">

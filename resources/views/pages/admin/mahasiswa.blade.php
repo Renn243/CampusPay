@@ -74,9 +74,6 @@
                                             <i class="bi bi-eye"></i>
                                         </button>
                                     </a>
-                                    <button class="btn btn-sm btn-warning">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
                                 </div>
                             </td>
                         </tr>
