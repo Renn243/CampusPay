@@ -41,6 +41,8 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('/riwayat', [PembayaranController::class, 'index'])->name('riwayat');
     Route::get('/riwayat/{id}', [PembayaranController::class, 'show'])->name('detailPembayaran');
     Route::get('/profile', [MahasiswaController::class, 'get'])->name('profile');
+    Route::put('/profile', [MahasiswaController::class, 'updateMahasiswa'])->name('updateProfile');
+    Route::put('/profile/password', [MahasiswaController::class, 'updateAkun'])->name('updatePassword');
 });
 
 // Route admin

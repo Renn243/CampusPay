@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 //Ini file ubah ke bentuk web.php untuk file view profile.blade dan detail2nya 
 
@@ -37,10 +38,7 @@ class MahasiswaController extends Controller
 
         $user->update($data);
 
-        return response()->json([
-            'message' => 'Password berhasil diperbarui',
-            'user'    => $user,
-        ]);
+        return redirect()->back()->with('success', 'Password berhasi diperbarui');
     }
 
     //fungsi edit profile di button profile.blade.php
@@ -68,9 +66,6 @@ class MahasiswaController extends Controller
             ])
         );
 
-        return response()->json([
-            'message'   => 'Data mahasiswa berhasil diperbarui',
-            'mahasiswa' => $user->mahasiswa,
-        ]);
+        return redirect()->back()->with('success', 'Data mahasiswa berhasi diperbarui');
     }
 }

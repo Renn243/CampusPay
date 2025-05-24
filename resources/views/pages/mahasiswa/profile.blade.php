@@ -72,62 +72,40 @@
 
     <!-- Edit Profile Modal -->
     <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="profileForm">
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="fullName" class="form-label">Nama Lengkap</label>
-                                <input type="text" class="form-control" id="fullName" value="Nama Mahasiswa">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="nim" class="form-label">NIM</label>
-                                <input type="text" class="form-control" id="nim" value="123456789" readonly>
-                            </div>
-                        </div>
+                <form action="{{ route('updateProfile') }}" method="POST" id="profileForm">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editProfileModalLabel">Edit Profil</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
 
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" value="mahasiswa@email.com">
-
-                            </div>
-                            <div class="col-md-6">
-                                <label for="phone" class="form-label">Nomor Telepon</label>
-                                <input type="tel" class="form-control" id="phone" value="+62 812-3456-7890">
-                            </div>
+                        <div class="mb-3">
+                            <label for="no_telp" class="form-label">Nomor Telepon</label>
+                            <input type="tel" class="form-control" name="no_telp" id="no_telp"
+                                value="{{ auth()->user()->mahasiswa->no_telp ?? '' }}">
                         </div>
 
                         <div class="mb-3">
-                            <label for="address" class="form-label">Alamat</label>
-                            <textarea class="form-control" id="address"
-                                rows="3">Jl. Contoh No. 123, Jakarta Selatan, DKI Jakarta</textarea>
+                            <label for="alamat" class="form-label">Alamat</label>
+                            <textarea class="form-control" name="alamat" id="alamat" rows="3">{{ auth()->user()->mahasiswa->alamat ?? '' }}</textarea>
                         </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="birthdate" class="form-label">Tanggal Lahir</label>
-                                <input type="date" class="form-control" id="birthdate" value="2000-01-01">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="gender" class="form-label">Jenis Kelamin</label>
-                                <select class="form-select" id="gender">
-                                    <option value="male">Laki-laki</option>
-                                    <option value="female">Perempuan</option>
-                                </select>
-                            </div>
+                        <div class="mb-3">
+                            <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
+                            <input type="date" class="form-control" name="tanggal_lahir" id="tanggal_lahir"
+                                value="{{ auth()->user()->mahasiswa->tanggal_lahir ?? '' }}">
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" onclick="saveProfile()">Simpan Perubahan</button>
-                </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -141,27 +119,24 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="passwordForm">
-                        <div class="mb-3">
-                            <label for="currentPassword" class="form-label">Password Saat Ini</label>
-                            <input type="password" class="form-control" id="currentPassword" required>
-                        </div>
-
+                    <form action="{{ route('updatePassword') }}" method="POST">
+                        @csrf
+                        @method('PUT')
                         <div class="mb-3">
                             <label for="newPassword" class="form-label">Password Baru</label>
-                            <input type="password" class="form-control" id="newPassword" required>
-                            <div class="form-text">Password minimal 8 karakter dengan kombinasi huruf dan angka.</div>
+                            <input type="password" name="password" class="form-control" id="newPassword" required>
                         </div>
 
                         <div class="mb-3">
                             <label for="confirmPassword" class="form-label">Konfirmasi Password Baru</label>
-                            <input type="password" class="form-control" id="confirmPassword" required>
+                            <input type="password" name="password_confirmation" class="form-control" id="confirmPassword" required>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Ubah Password</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" onclick="changePassword()">Ubah Password</button>
                 </div>
             </div>
         </div>
