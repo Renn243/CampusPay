@@ -28,21 +28,17 @@ class MahasiswaController extends Controller
         $user = auth()->user();
 
         $request->validate([
-            'username'         => 'sometimes|string|unique:users,username,' . $user->id,
-            'email'            => 'sometimes|string|email|unique:users,email,' . $user->id,
-            'nama_lengkap'     => 'sometimes|string',
-            'password'         => 'sometimes|string|min:8|confirmed',
+            'password'         => 'sometimes|string|min:8|confirmed'
         ]);
 
-        $data = $request->only(['username', 'email', 'nama_lengkap']);
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
-        }
+        $data = $request->only(['password']);
+
+        $data['password'] = Hash::make($request->password);
 
         $user->update($data);
 
         return response()->json([
-            'message' => 'Akun berhasil diperbarui',
+            'message' => 'Password berhasil diperbarui',
             'user'    => $user,
         ]);
     }
@@ -59,28 +55,16 @@ class MahasiswaController extends Controller
         $mId = $user->mahasiswa->id_mahasiswa;
 
         $request->validate([
-            'nim'              => 'sometimes|string|unique:mahasiswa,nim,' . $mId . ',id_mahasiswa',
-            'nama_mahasiswa'   => 'sometimes|string',
             'tanggal_lahir'    => 'sometimes|date',
-            'agama'            => 'sometimes|in:Islam,Kristen,Katolik,Hindu,Buddha,Konghucu,Lainnya',
-            'fakultas'         => 'sometimes|in:teknik,ekonomi,kedokteran,hukum,fisip',
-            'program_studi'    => 'sometimes|in:teknik informatika,teknik sipil,teknik elektro',
-            'angkatan'         => 'sometimes|in:2023,2022,2021,2020',
             'alamat'           => 'sometimes|string',
-            'status'           => 'sometimes|in:aktif,non-aktif',
+            'no_telp'          => 'sometimes|string',
         ]);
 
         $user->mahasiswa->update(
             $request->only([
-                'nim',
-                'nama_mahasiswa',
                 'tanggal_lahir',
-                'agama',
-                'fakultas',
-                'program_studi',
-                'angkatan',
                 'alamat',
-                'status'
+                'no_telp',
             ])
         );
 

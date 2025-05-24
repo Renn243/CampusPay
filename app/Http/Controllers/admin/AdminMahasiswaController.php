@@ -32,7 +32,6 @@ class AdminMahasiswaController extends Controller
         return view('pages.admin.mahasiswa', compact('listMahasiswa', 'search'));
     }
 
-
     // Tampilkan detail transaksi tertentu (pembayaran, rincian, dan info tagihan)
     public function show($id)
     {

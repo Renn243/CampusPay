@@ -13,7 +13,7 @@
                     </div>
                     <div class="card-body">
                         <div class="list-group">
-                            @foreach ($transaksi as $item)
+                            @forelse ($transaksi as $item)
                             <div class="list-group-item list-group-item-action">
                                 <div class="d-flex w-100 justify-content-between align-items-center">
                                     <div>
@@ -21,33 +21,36 @@
                                         <p class="mb-1 text-muted small">Batas waktu: {{ \Carbon\Carbon::parse($item->tagihan->tanggal_batas)->format('d F Y') }}</p>
                                     </div>
                                     <div class="text-end">
-                                        <h5 class="mb-1">Rp {{ number_format($item->jumlah_bayar, 0, ',', '.') }}</h5>
-                                        @if($item->status == 'pending')
-                                        <span class="badge bg-danger">Belum Dibayar</span>
-                                        @else
+                                        <h5 class="mb-1">Rp {{ number_format($item->tagihan->nominal, 0, ',', '.') }}</h5>
+                                        @if($item->status == 'lunas')
                                         <span class="badge bg-success">Lunas</span>
+                                        @elseif($item->status == 'pending')
+                                        <span class="badge bg-warning">Pending</span>
+                                        @else
+                                        <span class="badge bg-warning">Belum Lunas</span>
                                         @endif
                                     </div>
                                 </div>
-                                @if($item->status == 'pending')
+                                @if($item->status == 'belum bayar')
                                 <div class="mt-2 d-grid">
                                     <button
                                         type="button"
                                         class="btn btn-primary btn-bayar"
                                         data-bs-toggle="modal"
                                         data-bs-target="#paymentModal"
-                                        data-id="{{ $item->id_transaksi }}"
+                                        data-id="{{ $item->id_tagihan }}"
                                         data-category="{{ $item->tagihan->nama_tagihan }}"
-                                        data-amount="{{ $item->jumlah_bayar }}">
+                                        data-amount="{{ $item->tagihan->nominal }}">
                                         Bayar Sekarang
                                     </button>
                                 </div>
                                 @endif
                             </div>
-                            @endforeach
+                            @empty
+                            <span class="text-center">Tidak ada tagihan saat ini</span>
+                            @endforelse
                         </div>
 
-                        {{-- Pagination --}}
                         <div class="mt-3">
                             {{ $transaksi->links() }}
                         </div>

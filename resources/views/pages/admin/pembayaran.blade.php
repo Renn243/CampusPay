@@ -40,7 +40,6 @@
                             <th>Kategori</th>
                             <th>Jumlah</th>
                             <th>Tanggal</th>
-                            <th>Metode</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -48,15 +47,14 @@
                     <tbody>
                         @forelse ($tagihan as $item)
                         <tr>
-                            <td>{{ $item->id_transaksi }}</td>
+                            <td>{{ $item->id }}</td>
                             <td>
                                 <h6 class="mb-0">{{ $item->mahasiswa->nama_mahasiswa }}</h6>
                                 <small class="text-muted">{{ $item->mahasiswa->nim }}</small>
                             </td>
                             <td>{{ $item->tagihan->nama_tagihan ?? '-' }}</td>
-                            <td>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($item->tagihan->nominal, 0, ',', '.') }}</td>
                             <td>{{ \Carbon\Carbon::parse($item->tanggal_transaksi)->translatedFormat('d F Y') }}</td>
-                            <td>{{ $item->metode_pembayaran ?? '-' }}</td>
                             <td>
                                 @php
                                 $statusBadge = match(strtolower($item->status)) {
@@ -73,25 +71,21 @@
                             </td>
                             <td>
                                 <div class="action-buttons d-flex gap-1 align-items-center">
-                                    <a href="{{ route('admin.detailPembayaran', $item->id_transaksi) }}" class="btn btn-sm btn-primary" title="Detail">
+                                    <a href="{{ route('admin.detailPembayaran', [$item->id_mahasiswa, $item->id_tagihan] )}}" class="btn btn-sm btn-primary" title="Detail">
                                         <i class="bi bi-eye"></i>
                                     </a>
 
                                     @if($item->status === 'pending')
-                                    <form action="{{ route('admin.updateStatusPembayaran', $item->id_transaksi) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('admin.updateStatusPembayaran', $item->id) }}" method="POST" style="display:inline;">
                                         @csrf
-                                        <input type="hidden" name="status" value="sukses">
+                                        <input type="hidden" name="status" value="lunas">
                                         <button type="submit" class="btn btn-sm btn-success" title="Approve">
                                             <i class="bi bi-check-lg"></i>
                                         </button>
                                     </form>
-
-                                    <form action="{{ route('admin.updateStatusPembayaran', $item->id_transaksi) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        <input type="hidden" name="status" value="ditolak">
-                                        <button type="submit" class="btn btn-sm btn-danger" title="Tolak">
-                                            <i class="bi bi-x-lg"></i>
-                                        </button>
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#tolakModal">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
                                     </form>
                                     @endif
                                 </div>
@@ -112,5 +106,28 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Upload Payment -->
+<div class="modal fade" id="tolakModal" tabindex="-1" aria-labelledby="tolakModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{{ route('admin.updateStatusPembayaran', $item->id) }}" method="POST" enctype="multipart/form-data" class="modal-content">
+            @csrf
+            <input type="hidden" name="status" value="ditolak">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadModalLabel">Konfirmasi Penolakan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="image" class="form-label">Alasan Ditolak</label>
+                    <input class="form-control" type="text" id="alasan" name="alasan" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Upload</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            </div>
+        </form>
+    </div>
 </div>
 @endsection

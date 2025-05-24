@@ -33,12 +33,12 @@
                             <tr>
                                 <td><strong>Status</strong></td>
                                 <td>:
-                                    @if ($transaksi->status === 'sukses')
-                                    <span class="badge bg-success">Sukses</span>
-                                    @elseif ($transaksi->status === 'pending')
-                                    <span class="badge bg-warning text-dark">Pending</span>
+                                    @if ($tagihan_mahasiswa->status === 'lunas')
+                                    <span class="badge bg-success">Lunas</span>
+                                    @elseif ($tagihan_mahasiswa->status === 'pending')
+                                    <span class="badge bg-warning">Pending</span>
                                     @else
-                                    <span class="badge bg-danger">Gagal</span>
+                                    <span class="badge bg-danger">Belum Bayar</span>
                                     @endif
                                 </td>
                             </tr>
@@ -89,11 +89,51 @@
                                 <td><strong>Angkatan</strong></td>
                                 <td>: {{ $transaksi->tagihan->angkatan ?? '-' }}</td>
                             </tr>
+                            @if(!empty($transaksi->alasan))
+                            <tr>
+                                <td><strong>Alasan</strong></td>
+                                <td>: {{ $transaksi->alasan }}</td>
+                            </tr>
+                            @endif
                         </table>
+
+                        <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                            Upload Bukti Pembayaran
+                        </button>
+                        @if($transaksi->foto_bukti_transaksi)
+                        <a href="{{ asset($transaksi->foto_bukti_transaksi) }}"
+                            download
+                            class="btn btn-success mt-4">
+                            Download Bukti Pembayaran
+                        </a>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Modal Upload Payment -->
+<div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{{ route('uploadBukti', [$transaksi->id_transaksi, $tagihan_mahasiswa->id]) }}" method="POST" enctype="multipart/form-data" class="modal-content">
+            @csrf
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadModalLabel">Upload Bukti Pembayaran</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="image" class="form-label">Pilih Gambar Bukti Pembayaran</label>
+                    <input class="form-control" type="file" id="image" name="image" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Upload</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            </div>
+        </form>
     </div>
 </div>
 @endsection

@@ -37,21 +37,21 @@
                         <tbody>
                             @forelse ($transaksi as $item)
                             <tr>
-                                <td>{{ $item->id_transaksi ?? 'N/A' }}</td>
+                                <td>{{ $item->id ?? 'N/A' }}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</td>
                                 <td>{{ $item->tagihan->nama_tagihan ?? 'N/A' }}</td>
-                                <td>Rp {{ number_format($item->jumlah_bayar, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($item->tagihan->nominal, 0, ',', '.') }}</td>
                                 <td>
-                                    @if ($item->status === 'sukses')
-                                    <span class="badge bg-success">Sukses</span>
+                                    @if ($item->status === 'lunas')
+                                    <span class="badge bg-success">Lunas</span>
                                     @elseif ($item->status === 'pending')
-                                    <span class="badge bg-warning text-dark">Pending</span>
+                                    <span class="badge bg-warning">Pending</span>
                                     @else
-                                    <span class="badge bg-danger">Gagal</span>
+                                    <span class="badge bg-danger">Belum Bayar</span>
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('detailPembayaran', ['id' => $item->id_transaksi]) }}">
+                                    <a href="{{ route('detailPembayaran', ['id' => $item->id_tagihan]) }}">
                                         <button class="btn btn-sm btn-primary">Detail</button>
                                     </a>
                                 </td>

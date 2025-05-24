@@ -7,10 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Transaksi;
-use App\Models\Mahasiswa;
-
-//Ini file ubah ke bentuk web.php untuk file view admin/pembayaran.blade dan detail2nya
-
+use App\Models\TagihanMahasiswa;
+use App\Mail\VerifyTransaction;
+use Illuminate\Support\Facades\Mail;
 
 class AdminTransaksiController extends Controller
 {
@@ -20,7 +19,7 @@ class AdminTransaksiController extends Controller
         $perPage = $request->query('per_page', 10);
         $search = $request->query('search');
 
-        $query = Transaksi::with(['mahasiswa', 'tagihan']);
+        $query = TagihanMahasiswa::with(['mahasiswa', 'tagihan']);
 
         if ($search) {
             $query->whereHas('mahasiswa', function ($q) use ($search) {
@@ -35,41 +34,62 @@ class AdminTransaksiController extends Controller
         return view('pages.admin.pembayaran', compact('tagihan'));
     }
 
-
     // Tampilkan detail transaksi tertentu (pembayaran, rincian, dan info tagihan)
-    public function show($id)
+    public function show($id_mahasiswa, $id_tagihan)
     {
-        $transaksiById = Transaksi::with(['mahasiswa', 'tagihan'])
-            ->where('id_transaksi', $id)
-            ->first(); // Ganti dari get() ke first()
+        $transaksi = Transaksi::where('id_tagihan', $id_tagihan)
+            ->where('id_mahasiswa', $id_mahasiswa)
+            ->with(['mahasiswa', 'tagihan'])
+            ->first();
 
-        if (!$transaksiById) {
-            return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
+        $tagihan = TagihanMahasiswa::where('id_tagihan', $id_tagihan)
+            ->where('id_mahasiswa', $id_mahasiswa)
+            ->first();
+
+        if (!$transaksi) {
+            return redirect()->back()->withErrors('Transaksi tidak ditemukan.');
         }
 
-        return view('pages.admin.detailPembayaran', compact('transaksiById'));
+        return view('pages.admin.detailPembayaran', compact('transaksi', 'tagihan'));
     }
-
 
     // Update status transaksi berdasarkan request status admin (sukses, gagal)
     public function updateStatusPembayaran(Request $request, $id)
     {
-        $transaksiById = Transaksi::with(['mahasiswa', 'tagihan'])  // Pastikan relasi 'mahasiswa' dan 'tagihan' sudah didefinisikan
-            ->where('id_transaksi', $id)  // Filter berdasarkan id_mahasiswa
+        $transaksiById = TagihanMahasiswa::with(['mahasiswa', 'tagihan'])  // Pastikan relasi 'mahasiswa' dan 'tagihan' sudah didefinisikan
+            ->where('id', $id)  // Filter berdasarkan id_mahasiswa
             ->first();
 
         if (!$transaksiById) {
             return redirect()->back()->with('error', 'Transaksi tidak ditemukan');
         }
 
-        if ($transaksiById->status === 'sukses') {
-            return redirect()->back()->with('error', 'Transaksi sudah dibayar');
+        $transaksiById->update([
+            'status'        => $request->status,
+        ]);
+
+        Mail::to($transaksiById->mahasiswa->user->email)->send(new VerifyTransaction($transaksiById));
+
+        return redirect()->back()->with('success', 'Status pembayaran berhasil diperbarui');
+    }
+
+    // Update status transaksi berdasarkan request status admin (sukses, gagal)
+    public function updateStatusPembayaranTolak(Request $request, $id)
+    {
+        $transaksiById = TagihanMahasiswa::with(['mahasiswa', 'tagihan'])  // Pastikan relasi 'mahasiswa' dan 'tagihan' sudah didefinisikan
+            ->where('id', $id)  // Filter berdasarkan id_mahasiswa
+            ->first();
+
+        if (!$transaksiById) {
+            return redirect()->back()->with('error', 'Transaksi tidak ditemukan');
         }
 
         $transaksiById->update([
             'status'        => $request->status,
-            'tanggal_bayar' => Carbon::now(),
+            'alasan'        => $request->alasan,
         ]);
+
+        Mail::to($transaksiById->mahasiswa->user->email)->send(new VerifyTransaction($transaksiById));
 
         return redirect()->back()->with('success', 'Status pembayaran berhasil diperbarui');
     }

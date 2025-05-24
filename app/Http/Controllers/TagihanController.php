@@ -90,7 +90,6 @@ class TagihanController extends Controller
                 'id_tagihan' => $tagihan->id_tagihan,
                 'jumlah_bayar' => $tagihan->nominal,
                 'tanggal_bayar' => null,
-                'status' => 'pending',
             ]);
 
             Mail::to($mhs->user->email)->send(new TransaksiCreated($transaksi));

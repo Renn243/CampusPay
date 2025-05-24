@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Models\TagihanMahasiswa;
 use App\Models\Transaksi;
 use Midtrans\Config;
 use Midtrans\Snap;
@@ -34,7 +35,7 @@ class PembayaranController extends Controller
         $perPage = $request->query('per_page', 10);
         $search = $request->query('q');
 
-        $transaksi = Transaksi::with(['mahasiswa', 'tagihan'])
+        $transaksi = TagihanMahasiswa::with(['mahasiswa', 'tagihan'])
             ->where('id_mahasiswa', $mahasiswa->id_mahasiswa)
             ->when($search, function ($query, $search) {
                 $query->whereHas('tagihan', function ($q) use ($search) {
@@ -57,21 +58,32 @@ class PembayaranController extends Controller
 
         $mahasiswa = $user->mahasiswa;
         $perPage = $request->query('per_page', 10);
+        $search = $request->query('q');
 
-        $transaksi = Transaksi::with(['mahasiswa', 'tagihan'])
+        $transaksi = TagihanMahasiswa::with(['mahasiswa', 'tagihan'])
             ->where('id_mahasiswa', $mahasiswa->id_mahasiswa)
+            ->when($search, function ($query, $search) {
+                $query->whereHas('tagihan', function ($q) use ($search) {
+                    $q->where('nama_tagihan', 'like', '%' . $search . '%');
+                });
+            })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
         return view('pages.mahasiswa.pembayaran', compact('transaksi'));
     }
 
-    public function show($id_transaksi)
+    public function show($id_tagihan)
     {
         $user = Auth::user();
         $mahasiswa = $user->mahasiswa;
 
-        $transaksi = Transaksi::where('id_transaksi', $id_transaksi)
+        $transaksi = Transaksi::where('id_tagihan', $id_tagihan)
+            ->where('id_mahasiswa', $mahasiswa->id_mahasiswa)
+            ->with(['mahasiswa', 'tagihan'])
+            ->first();
+
+        $tagihan_mahasiswa = TagihanMahasiswa::where('id_tagihan', $id_tagihan)
             ->where('id_mahasiswa', $mahasiswa->id_mahasiswa)
             ->with(['mahasiswa', 'tagihan'])
             ->first();
@@ -80,38 +92,33 @@ class PembayaranController extends Controller
             return redirect()->back()->withErrors('Transaksi tidak ditemukan.');
         }
 
-        return view('pages.mahasiswa.detailPembayaran', compact('transaksi'));
+        return view('pages.mahasiswa.detailPembayaran', compact('transaksi', 'tagihan_mahasiswa'));
     }
 
-    public function transaksiWithMidtrans(Request $request, $id_transaksi)
+    public function transaksiWithMidtrans(Request $request, $id_tagihan)
     {
         $user = Auth::user();
         $mahasiswa = $user->mahasiswa;
 
-        \Log::info("Mulai transaksiWithMidtrans untuk id_transaksi: $id_transaksi, user_id: {$user->id}");
+        \Log::info("Mulai transaksiWithMidtrans untuk id_transaksi: $id_tagihan, user_id: {$user->id}");
 
-        $transaksi = Transaksi::where('id_transaksi', $id_transaksi)
+        $transaksi = Transaksi::where('id_tagihan', $id_tagihan)
             ->where('id_mahasiswa', $mahasiswa->id_mahasiswa)
-            ->where('status', 'pending')
             ->first();
 
         if (!$transaksi) {
-            \Log::warning("Transaksi tidak ditemukan atau sudah diproses: id_transaksi=$id_transaksi, id_mahasiswa={$mahasiswa->id_mahasiswa}");
+            \Log::warning("Transaksi tidak ditemukan atau sudah diproses: id_transaksi=$id_tagihan, id_mahasiswa={$mahasiswa->id_mahasiswa}");
             return response()->json([
                 'success' => false,
                 'message' => 'Transaksi tidak ditemukan atau sudah diproses.'
             ], 404);
         }
 
-        if (!$transaksi->order_id) {
-            $transaksi->order_id = 'ORDER-' . time();
-            $transaksi->save();
-            \Log::info("Order ID baru dibuat: {$transaksi->order_id}");
-        }
+        $orderId = 'ORDER-' . time();
 
         $payload = [
             'transaction_details' => [
-                'order_id'     => $transaksi->order_id,
+                'order_id'     => $orderId,
                 'gross_amount' => $transaksi->jumlah_bayar,
             ],
             'customer_details' => [
@@ -126,13 +133,16 @@ class PembayaranController extends Controller
         Config::$isSanitized = true;
         Config::$is3ds = true;
 
+        \Log::info('Midtrans Config:', [
+            'MIDTRANS_SERVER_KEY' => env('MIDTRANS_SERVER_KEY'),
+            'MIDTRANS_IS_PRODUCTION' => env('MIDTRANS_IS_PRODUCTION'),
+        ]);
+
         try {
             $snapToken = Snap::getSnapToken($payload);
 
-            $transaksi->snap_token = $snapToken;
+            $transaksi->metode_transaksi = "Transfer Bank";
             $transaksi->save();
-
-            \Log::info("Snap token berhasil dibuat untuk order_id {$transaksi->order_id}");
 
             return response()->json([
                 'success' => true,
@@ -140,7 +150,7 @@ class PembayaranController extends Controller
                 'snap_token' => $snapToken,
             ]);
         } catch (\Exception $e) {
-            \Log::error("Gagal membuat transaksi Midtrans untuk order_id {$transaksi->order_id}: " . $e->getMessage());
+            \Log::error('Gagal membuat Snap Token: ' . $e->getMessage());
 
             return response()->json([
                 'success' => false,
@@ -150,87 +160,49 @@ class PembayaranController extends Controller
         }
     }
 
-    public function updateStatusTransaksi($id_transaksi)
+    public function uploadBuktiPembayaran(Request $request, $id_transaksi, $id_tagihan)
     {
-        \Log::info('Mulai updateStatusTransaksi untuk id_transaksi: ' . $id_transaksi);
-
-        $transaksi = Transaksi::where('id_transaksi', $id_transaksi)
-            ->with(['mahasiswa', 'tagihan'])
-            ->first();
-
-        if (!$transaksi || !$transaksi->order_id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Transaksi tidak ditemukan atau order_id kosong.'
-            ], 404);
-        }
-
-        $orderId = trim($transaksi->order_id);
-        \Log::info('Order ID transaksi: ' . $orderId);
+        // Validasi input
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
 
         try {
-            $status = Transaction::status($orderId);
-            \Log::info('Status transaksi dari Midtrans:', (array)$status);
+            // Ambil file dan buat nama unik
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
 
-            $updateData = [];
+            // Simpan ke folder public/receipts
+            $file->move(public_path('receipts'), $filename);
 
-            if (isset($status->transaction_status)) {
-                \Log::info('Status transaksi: ' . $status->transaction_status);
+            // Cari transaksi yang sesuai
+            $transaksi = Transaksi::where('id_transaksi', $id_transaksi)
+                ->first();
 
-                switch ($status->transaction_status) {
-                    case 'settlement':
-                        $updateData['status'] = 'sukses';
-                        $updateData['tanggal_bayar'] = now();
-                        $updateData['metode_transaksi'] = $status->payment_type ?? null;
+            $tagihan_mahasiswa = TagihanMahasiswa::where('id', $id_tagihan)
+                ->first();
 
-                        $pdf = PDF::loadView('emails.tanda_terima', [
-                            'transaksi' => $transaksi,
-                            'status' => $status
-                        ]);
-
-                        $fileName = $orderId . '.pdf';
-                        $folderPath = public_path('receipts');
-                        if (!file_exists($folderPath)) {
-                            mkdir($folderPath, 0755, true);
-                        }
-                        $filePath = $folderPath . '/' . $fileName;
-                        $pdf->save($filePath);
-                        \Log::info('PDF tanda terima berhasil disimpan: ' . $filePath);
-
-                        $updateData['foto_bukti_transaksi'] = 'receipts/' . $fileName;
-                        break;
-
-                    case 'pending':
-                        $updateData['status'] = 'pending';
-                        break;
-
-                    case 'cancel':
-                    case 'expire':
-                    case 'failure':
-                        $updateData['status'] = 'gagal';
-                        break;
-                }
-
-                $transaksi->update($updateData);
-                \Log::info('Update database berhasil.', $updateData);
-
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Status transaksi berhasil diperbarui.',
-                    'data' => $updateData,
-                ]);
+            // Jika transaksi tidak ditemukan
+            if (!$transaksi) {
+                return back()->with('error', 'Transaksi tidak ditemukan.');
             }
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Status transaksi dari Midtrans tidak lengkap.'
-            ], 422);
+            if (!$transaksi->metode_transaksi) {
+                $transaksi->metode_transaksi = "tunai";
+            }
+
+            // Simpan path gambar dan ubah status
+            $transaksi->foto_bukti_transaksi = 'receipts/' . $filename;
+            $tagihan_mahasiswa->status = 'pending';
+            $transaksi->tanggal_bayar = now();
+            $transaksi->save();
+            $tagihan_mahasiswa->save();
+
+            return back()->with('success', 'Bukti pembayaran berhasil diupload!')
+                ->with('image', $filename);
         } catch (\Exception $e) {
-            \Log::error('Midtrans API error: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal mengambil status transaksi dari Midtrans.'
-            ], 500);
+            \Log::error('Upload Bukti Gagal: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat mengupload bukti pembayaran.');
         }
     }
 }

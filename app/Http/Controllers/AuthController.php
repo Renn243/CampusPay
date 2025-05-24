@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
-
-//Ini file ubah ke bentuk web.php untuk file view login.blade (fungsi disini yang diubah untuk login saja)
-//pindahkan yang register ke adminMahasiswaController versi web.php (klw bisa buat file controller baru, copas saja terus ubah)
-//yang dashboard admin sama mahasiswa nanti dibahas di discord
-
 class AuthController extends Controller
 {
 

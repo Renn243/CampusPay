@@ -14,7 +14,6 @@ class Transaksi extends Model
         'id_tagihan',
         'jumlah_bayar',
         'tanggal_bayar',
-        'status',
         'order_id',
         'metode_transaksi',
         'foto_bukti_transaksi',

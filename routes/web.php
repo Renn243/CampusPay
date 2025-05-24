@@ -37,6 +37,7 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('/pembayaran', [PembayaranController::class, 'indexPembayaran'])->name('pembayaran');
     Route::post('/pembayaran/{id_transaksi}', [PembayaranController::class, 'transaksiWithMidtrans'])->name('pembayaranMidtrans');
     Route::post('/pembayaran/updateStatus/{id_transaksi}', [PembayaranController::class, 'updateStatusTransaksi']);
+    Route::post('/riwayat/uploadBukti/{id_transaksi}/{id_tagihan}', [PembayaranController::class, 'uploadBuktiPembayaran'])->name('uploadBukti');
     Route::get('/riwayat', [PembayaranController::class, 'index'])->name('riwayat');
     Route::get('/riwayat/{id}', [PembayaranController::class, 'show'])->name('detailPembayaran');
     Route::get('/profile', [MahasiswaController::class, 'get'])->name('profile');
@@ -48,7 +49,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // Transaksi
     Route::get('/pembayaran', [AdminTransaksiController::class, 'index'])->name('listPembayaran');
-    Route::get('/pembayaran/{id}', [AdminTransaksiController::class, 'show'])->name('detailPembayaran');
+    Route::get('/pembayaran/{id_transaksi}/{id_tagihan}', [AdminTransaksiController::class, 'show'])->name('detailPembayaran');
     Route::post('/pembayaran/{id}', [AdminTransaksiController::class, 'updateStatusPembayaran'])->name('updateStatusPembayaran');
 
     // Mahasiswa

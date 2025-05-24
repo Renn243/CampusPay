@@ -16,44 +16,44 @@
                 <div class="col-md-6">
                     <div class="d-flex align-items-center mb-3">
                         <i class="bi bi-receipt text-primary fs-2"></i>
-                        <h5 class="ms-3 mb-0">{{ $transaksiById->tagihan->nama_tagihan ?? '-' }}</h5>
+                        <h5 class="ms-3 mb-0">{{ $transaksi->tagihan->nama_tagihan ?? '-' }}</h5>
                     </div>
 
-                    <h6 class="mb-1">{{ $transaksiById->mahasiswa->nama_mahasiswa ?? '-' }}</h6>
-                    <small class="text-muted">NIM: {{ $transaksiById->mahasiswa->nim ?? '-' }}</small>
+                    <h6 class="mb-1">{{ $transaksi->mahasiswa->nama_mahasiswa ?? '-' }}</h6>
+                    <small class="text-muted">NIM: {{ $transaksi->mahasiswa->nim ?? '-' }}</small>
 
                     <table class="table table-borderless mt-3">
                         <tbody>
                             <tr>
                                 <td class="fw-semibold" style="width: 40%;">ID Pembayaran</td>
-                                <td>: {{ $transaksiById->id_transaksi }}</td>
+                                <td>: {{ $transaksi->id_transaksi }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-semibold">Order ID</td>
-                                <td>: {{ $transaksiById->order_id ?? '-' }}</td>
+                                <td>: {{ $transaksi->order_id ?? '-' }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-semibold">Tanggal Pembayaran</td>
-                                <td>: {{ \Carbon\Carbon::parse($transaksiById->tanggal_bayar)->translatedFormat('d F Y') }}</td>
+                                <td>: {{ \Carbon\Carbon::parse($transaksi->tanggal_bayar)->translatedFormat('d F Y') }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-semibold">Metode Pembayaran</td>
-                                <td>: {{ $transaksiById->metode_transaksi ?? '-' }}</td>
+                                <td>: {{ $transaksi->metode_transaksi ?? '-' }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-semibold">Status</td>
                                 <td>
                                     :
                                     <span class="badge 
-                                        {{ $transaksiById->status === 'sukses' ? 'bg-success' : 
-                                           ($transaksiById->status === 'pending' ? 'bg-warning text-dark' : 'bg-danger') }}">
-                                        {{ ucfirst($transaksiById->status) }}
+                                        {{ $tagihan->status === 'lunas' ? 'bg-success' : 
+                                           ($tagihan->status === 'pending' ? 'bg-warning text-dark' : 'bg-danger') }}">
+                                        {{ ucfirst($tagihan->status) }}
                                     </span>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="fw-semibold">Jumlah Bayar</td>
-                                <td>: Rp {{ number_format($transaksiById->jumlah_bayar ?? 0, 0, ',', '.') }}</td>
+                                <td>: Rp {{ number_format($transaksi->jumlah_bayar ?? 0, 0, ',', '.') }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -68,43 +68,43 @@
                                 <tbody>
                                     <tr>
                                         <td class="fw-semibold" style="width: 40%;">Nama Tagihan</td>
-                                        <td>: {{ $transaksiById->tagihan->nama_tagihan ?? '-' }}</td>
+                                        <td>: {{ $transaksi->tagihan->nama_tagihan ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <td class="fw-semibold">Kategori</td>
-                                        <td>: {{ $transaksiById->tagihan->kategori ?? '-' }}</td>
+                                        <td>: {{ $transaksi->tagihan->kategori ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <td class="fw-semibold">Nominal</td>
-                                        <td>: Rp {{ number_format($transaksiById->tagihan->nominal ?? 0, 0, ',', '.') }}</td>
+                                        <td>: Rp {{ number_format($transaksi->tagihan->nominal ?? 0, 0, ',', '.') }}</td>
                                     </tr>
                                     <tr>
                                         <td class="fw-semibold">Tanggal Mulai</td>
                                         <td>:
-                                            {{ $transaksiById->tagihan->tanggal_mulai
-                                                ? \Carbon\Carbon::parse($transaksiById->tagihan->tanggal_mulai)->translatedFormat('d F Y')
+                                            {{ $transaksi->tagihan->tanggal_mulai
+                                                ? \Carbon\Carbon::parse($transaksi->tagihan->tanggal_mulai)->translatedFormat('d F Y')
                                                 : '-' }}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="fw-semibold">Tanggal Batas</td>
                                         <td>:
-                                            {{ $transaksiById->tagihan->tanggal_batas
-                                                ? \Carbon\Carbon::parse($transaksiById->tagihan->tanggal_batas)->translatedFormat('d F Y')
+                                            {{ $transaksi->tagihan->tanggal_batas
+                                                ? \Carbon\Carbon::parse($transaksi->tagihan->tanggal_batas)->translatedFormat('d F Y')
                                                 : '-' }}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="fw-semibold">Angkatan</td>
-                                        <td>: {{ $transaksiById->tagihan->angkatan ?? '-' }}</td>
+                                        <td>: {{ $transaksi->tagihan->angkatan ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <td class="fw-semibold">ID Mahasiswa</td>
-                                        <td>: {{ $transaksiById->id_mahasiswa }}</td>
+                                        <td>: {{ $transaksi->id_mahasiswa }}</td>
                                     </tr>
                                     <tr>
                                         <td class="fw-semibold">ID Tagihan</td>
-                                        <td>: {{ $transaksiById->id_tagihan }}</td>
+                                        <td>: {{ $transaksi->id_tagihan }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -116,7 +116,7 @@
                         <div class="card-body d-flex justify-content-between">
                             <span class="fw-semibold">Total Dibayar</span>
                             <span class="fw-bold text-primary">
-                                Rp {{ number_format($transaksiById->jumlah_bayar ?? 0, 0, ',', '.') }}
+                                Rp {{ number_format($transaksi->jumlah_bayar ?? 0, 0, ',', '.') }}
                             </span>
                         </div>
                     </div>

@@ -23,26 +23,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const payButton = document.getElementById('pay-button');
 
     payButton.addEventListener('click', function () {
-        const transaksiId = this.getAttribute('data-transaksi-id');
+        const tagihanId = this.getAttribute('data-transaksi-id');
         payButton.disabled = true;
-        fetch(`/pembayaran/${transaksiId}`, {
+        console.log(tagihanId)
+        fetch(`/pembayaran/${tagihanId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
             },
-            body: JSON.stringify({ id_transaksi: transaksiId })
+            body: JSON.stringify({ id_tagihan: tagihanId })
         })
             .then(response => response.json())
             .then(data => {
                 if (data.snap_token) {
                     snap.pay(data.snap_token, {
                         onSuccess: function (result) {
-                            updateStatus(transaksiId, result, "Pembayaran berhasil!");
                             document.getElementById('payment-modal').classList.add('hidden');
                         },
                         onPending: function (result) {
-                            updateStatus(transaksiId, result, "Pembayaran masih pending, silakan tunggu konfirmasi.");
                             document.getElementById('payment-modal').classList.add('hidden');
                         },
                         onError: function (result) {
