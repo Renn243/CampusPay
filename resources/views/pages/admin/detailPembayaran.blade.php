@@ -12,7 +12,6 @@
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="row g-4">
-                <!-- Informasi Mahasiswa dan Transaksi -->
                 <div class="col-md-6">
                     <div class="d-flex align-items-center mb-3">
                         <i class="bi bi-receipt text-primary fs-2"></i>
@@ -26,7 +25,7 @@
                         <tbody>
                             <tr>
                                 <td class="fw-semibold" style="width: 40%;">ID Pembayaran</td>
-                                <td>: {{ $transaksi->id_transaksi }}</td>
+                                <td>: {{ $tagihan->id }}</td>
                             </tr>
                             <tr>
                                 <td class="fw-semibold">Tanggal Pembayaran</td>
@@ -40,10 +39,15 @@
                                 <td class="fw-semibold">Status</td>
                                 <td>
                                     :
-                                    <span class="badge 
-                                        {{ $tagihan->status === 'lunas' ? 'bg-success' : 
-                                           ($tagihan->status === 'pending' ? 'bg-warning text-dark' : 'bg-danger') }}">
-                                        {{ ucfirst($tagihan->status) }}
+                                    @if($transaksi->status == 'lunas')
+                                    <span class=" badge bg-success">Lunas</span>
+                                    @elseif($transaksi->status == 'pending')
+                                    <span class="badge bg-warning">Pending</span>
+                                    @elseif($transaksi->status == 'belum bayar')
+                                    <span class="badge bg-danger">Belum Bayar</span>
+                                    @else
+                                    <span class="badge bg-danger">ditolak</span>
+                                    @endif
                                     </span>
                                 </td>
                             </tr>
@@ -62,7 +66,6 @@
                     @endif
                 </div>
 
-                <!-- Informasi Tagihan -->
                 <div class="col-md-6">
                     <div class="card bg-light mb-4">
                         <div class="card-body">
@@ -114,7 +117,6 @@
                         </div>
                     </div>
 
-                    <!-- Optional: Ringkasan Pembayaran -->
                     <div class="card">
                         <div class="card-body d-flex justify-content-between">
                             <span class="fw-semibold">Total Dibayar</span>

@@ -64,10 +64,10 @@
                                         data-deskripsi="{{ $item->deskripsi }}">
                                         <i class="bi bi-pencil"></i>
                                     </button>
-                                    <form action="{{ route('admin.deletePengumuman', $item->id_pengumuman) }}" method="POST" style="display:inline;">
+                                    <form id="delete-pengumuman-form-{{ $item->id_pengumuman }}" action="{{ route('admin.deletePengumuman', $item->id_pengumuman) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus pengumuman ini?')">
+                                        <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
@@ -171,6 +171,7 @@
 </div>
 
 <script>
+    // Passing data ke modal edit
     const editModal = document.getElementById('editPengumumanModal');
     editModal.addEventListener('show.bs.modal', function(event) {
         const button = event.relatedTarget;
@@ -188,6 +189,25 @@
         editModal.querySelector('#edit-deskripsi').value = deskripsi;
 
         editModal.querySelector('#editPengumumanForm').action = `/admin/pengumuman/${id}`;
+    });
+
+    document.querySelectorAll('form[id^="delete-pengumuman-form-"]').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Hapus pengumuman ini?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#0d6efd'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
     });
 </script>
 @endsection

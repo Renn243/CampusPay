@@ -26,12 +26,14 @@
                                         <span class="badge bg-success">Lunas</span>
                                         @elseif($item->status == 'pending')
                                         <span class="badge bg-warning">Pending</span>
+                                        @elseif($item->status == 'belum bayar')
+                                        <span class="badge bg-danger">Belum bayar</span>
                                         @else
-                                        <span class="badge bg-danger">Belum Bayar</span>
+                                        <span class="badge bg-danger">Ditolak</span>
                                         @endif
                                     </div>
                                 </div>
-                                @if($item->status == 'belum bayar')
+                                @if($item->status == 'belum bayar' || $item->status == 'ditolak')
                                 <div class="mt-2 d-grid">
                                     <button
                                         type="button"
@@ -64,14 +66,19 @@
                     <div class="card-body">
                         <h5>Petunjuk Pembayaran</h5>
                         <ol class="ps-3">
-                            <li>Pilih tagihan yang ingin Anda bayar</li>
-                            <li>Klik tombol "Bayar Sekarang"</li>
-                            <li>Pilih metode pembayaran yang tersedia</li>
-                            <li>Lakukan pembayaran sesuai instruksi</li>
-                            <li>Pembayaran akan diverifikasi secara otomatis</li>
+                            <li>Pilih tagihan yang ingin Anda bayar.</li>
+                            <li>Klik tombol "Bayar Sekarang".</li>
+                            <li>Anda dapat memilih untuk membayar secara tunai langsung atau melalui sistem.</li>
+                            <li>
+                                Jika membayar secara tunai, lakukan pembayaran langsung dan segera upload bukti pembayaran di bagian detail pembayaran.
+                            </li>
+                            <li>
+                                Jika membayar melalui sistem, lakukan pembayaran sesuai instruksi yang muncul (misalnya memilih bank atau metode lain di Midtrans), kemudian screenshot bukti pembayaran dan upload di bagian detail pembayaran.
+                            </li>
+                            <li>Pembayaran Anda akan diverifikasi oleh admin setelah bukti pembayaran diunggah.</li>
                         </ol>
                         <div class="alert alert-info" role="alert">
-                            <i class="bi bi-info-circle me-2"></i> Pembayaran akan langsung terverifikasi setelah pembayaran berhasil.
+                            <i class="bi bi-info-circle me-2"></i> Pembayaran akan diverifikasi oleh admin setelah bukti pembayaran diunggah.
                         </div>
                     </div>
                 </div>
@@ -79,7 +86,7 @@
                 <div class="card">
                     <div class="card-header">Kontak Bantuan</div>
                     <div class="card-body">
-                        <p><i class="bi bi-telephone me-2"></i> (021) 1234-5678</p>
+                        <p><i class="bi bi-telephone me-2"></i> (+62) 1234-5678</p>
                         <p><i class="bi bi-envelope me-2"></i> keuangan@kampus.ac.id</p>
                         <p><i class="bi bi-clock me-2"></i> Senin-Jumat, 08.00-16.00 WIB</p>
                     </div>
@@ -88,7 +95,7 @@
         </div>
     </div>
 
-    <!-- payment modal -->
+    <!-- Payment Modal -->
     <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

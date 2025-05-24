@@ -5,7 +5,7 @@
     <div id="detailPembayaran" class="page">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Detail Pembayaran</h2>
-            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
+            <a href="{{ route('riwayat') }}" class="btn btn-outline-primary">
                 <i class="bi bi-arrow-left"></i> Kembali
             </a>
         </div>
@@ -20,7 +20,7 @@
                         <table class="table table-borderless mb-0">
                             <tr>
                                 <td width="45%"><strong>ID Pembayaran</strong></td>
-                                <td>: {{ $transaksi->id_transaksi }}</td>
+                                <td>: {{ $tagihan_mahasiswa->id }}</td>
                             </tr>
                             <tr>
                                 <td><strong>Tanggal Pembayaran</strong></td>
@@ -37,8 +37,10 @@
                                     <span class="badge bg-success">Lunas</span>
                                     @elseif ($tagihan_mahasiswa->status === 'pending')
                                     <span class="badge bg-warning">Pending</span>
+                                    @elseif ($tagihan_mahasiswa->status === 'belum bayar')
+                                    <span class="badge bg-danger">Belum bayar</span>
                                     @else
-                                    <span class="badge bg-danger">Belum Bayar</span>
+                                    <span class="badge bg-danger">Ditolak</span>
                                     @endif
                                 </td>
                             </tr>
@@ -67,7 +69,8 @@
                             </tr>
                             <tr>
                                 <td><strong>Kategori</strong></td>
-                                <td>: {{ $transaksi->tagihan->kategori ?? '-' }}</td>
+                                <td>: {{ ucfirst($transaksi->tagihan->kategori ?? '-') }}
+                                </td>
                             </tr>
                             <tr>
                                 <td><strong>Tanggal Mulai</strong></td>
@@ -89,17 +92,19 @@
                                 <td><strong>Angkatan</strong></td>
                                 <td>: {{ $transaksi->tagihan->angkatan ?? '-' }}</td>
                             </tr>
-                            @if(!empty($transaksi->alasan))
+                            @if(!empty($tagihan_mahasiswa->alasan))
                             <tr>
                                 <td><strong>Alasan</strong></td>
-                                <td>: {{ $transaksi->alasan }}</td>
+                                <td>: {{ $tagihan_mahasiswa->alasan }}</td>
                             </tr>
                             @endif
                         </table>
 
+                        @if($tagihan_mahasiswa->status !== 'lunas')
                         <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#uploadModal">
                             Upload Bukti Pembayaran
                         </button>
+                        @endif
                         @if($transaksi->foto_bukti_transaksi)
                         <a href="{{ asset($transaksi->foto_bukti_transaksi) }}"
                             download

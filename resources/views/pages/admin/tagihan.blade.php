@@ -46,7 +46,7 @@
                         @forelse ($tagihan as $item)
                         <tr>
                             <td>{{ $item->nama_tagihan }}</td>
-                            <td><span class="badge bg-primary">{{ $item->kategori }}</span></td>
+                            <td><span class="badge bg-primary">{{ ucfirst($item->kategori ?? '-') }}</span></td>
                             <td>Rp {{ number_format($item->nominal, 0, ',', '.') }}</td>
                             <td>{{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') }}</td>
                             <td>{{ \Carbon\Carbon::parse($item->batas_waktu)->format('d M Y') }}</td>
@@ -67,7 +67,7 @@
                                         data-bs-target="#editJadwalTagihanModal">
                                         <i class="bi bi-pencil"></i>
                                     </button>
-                                    <form action="{{ route('admin.deleteTagihan', $item->id_tagihan) }}" method="POST" onsubmit="return confirm('Hapus tagihan ini?')" style="display:inline">
+                                    <form id="delete-form-{{ $item->id_tagihan }}" action="{{ route('admin.deleteTagihan', $item->id_tagihan) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-sm btn-danger" title="Hapus" type="submit">
@@ -221,6 +221,7 @@
 </div>
 
 <script>
+    // Passing data ke modal edit tagihan
     document.addEventListener('DOMContentLoaded', function() {
         const editButtons = document.querySelectorAll('.btn-edit-tagihan');
 
@@ -243,6 +244,25 @@
                 document.querySelector('#angkatan').value = angkatan;
 
                 document.querySelector('#editTagihanForm').action = `/admin/tagihan/${id}`;
+            });
+        });
+    });
+
+    document.querySelectorAll('form[id^="delete-form-"]').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Hapus tagihan ini?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#0d6efd'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
             });
         });
     });

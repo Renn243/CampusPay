@@ -10,12 +10,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Mail\TransaksiCreated;
 use Illuminate\Support\Facades\Mail;
 
-//Ini file ubah ke bentuk web.php untuk file view admin/tagihan.blade dan detail2nya 
 class TagihanController extends Controller
 {
-    /**
-     * List semua tagihan.
-     */
+    // Get all tagihan
     public function index(Request $request)
     {
         $perPage = $request->query('per_page', 10);
@@ -32,19 +29,14 @@ class TagihanController extends Controller
         return view('pages.admin.tagihan', compact('tagihan'));
     }
 
-
-    /**
-     * Lihat detail satu tagihan.
-     */
+    // Detail Tagihan
     public function show($id)
     {
         $tagihan = Tagihan::findOrFail($id);
         return view('pages.admin.detailTagihan', compact('tagihan'));
     }
 
-    /**
-     * Buat tagihan baru dan assign ke mahasiswa sesuai angkatan.
-     */
+    // Buat tagihan
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -64,7 +56,6 @@ class TagihanController extends Controller
             }
         }
 
-        // 1. Buat tagihan
         $tagihan = Tagihan::create($request->only([
             'nama_tagihan',
             'kategori',
@@ -74,17 +65,14 @@ class TagihanController extends Controller
             'angkatan'
         ]));
 
-        // 2. Ambil mahasiswa sesuai angkatan
         $mahasiswas = Mahasiswa::where('angkatan', $request->angkatan)->get();
 
         foreach ($mahasiswas as $mhs) {
-            // 3a. Tambah entri ke tabel tagihan_mahasiswa
             $tagihan->tagihanMahasiswa()->create([
                 'id_mahasiswa' => $mhs->id_mahasiswa,
                 'status'       => 'belum bayar',
             ]);
 
-            // 3b. Tambah entri ke tabel transaksi (pending)
             $transaksi = Transaksi::create([
                 'id_mahasiswa' => $mhs->id_mahasiswa,
                 'id_tagihan' => $tagihan->id_tagihan,
@@ -98,9 +86,7 @@ class TagihanController extends Controller
         return redirect()->back()->with('success', 'Berhasil tambah tagihan');
     }
 
-    /**
-     * Update data tagihan.
-     */
+    // Update tagihan admin
     public function update(Request $request, $id)
     {
         $tagihan = Tagihan::findOrFail($id);
@@ -131,9 +117,7 @@ class TagihanController extends Controller
         return redirect()->back()->with('success', 'Berhasil update tagihan');
     }
 
-    /**
-     * Hapus tagihan (pivot tagihan_mahasiswa akan terhapus cascade).
-     */
+    // Hapus Tagihan Admin
     public function destroy($id)
     {
         $tagihan = Tagihan::find($id);

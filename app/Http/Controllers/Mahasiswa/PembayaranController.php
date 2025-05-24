@@ -23,6 +23,7 @@ class PembayaranController extends Controller
         Config::$is3ds = true;
     }
 
+    // Get all data pembayaran untuk mahasiswa (Di page riwayat)
     public function index(Request $request)
     {
         $user = Auth::user();
@@ -48,6 +49,7 @@ class PembayaranController extends Controller
         return view('pages.mahasiswa.riwayat', compact('transaksi'));
     }
 
+    // Get all data pembayaran untuk mahasiswa (Di page pembayaran)
     public function indexPembayaran(Request $request)
     {
         $user = Auth::user();
@@ -73,6 +75,7 @@ class PembayaranController extends Controller
         return view('pages.mahasiswa.pembayaran', compact('transaksi'));
     }
 
+    // Detail pembayaran mahasiswa
     public function show($id_tagihan)
     {
         $user = Auth::user();
@@ -95,12 +98,11 @@ class PembayaranController extends Controller
         return view('pages.mahasiswa.detailPembayaran', compact('transaksi', 'tagihan_mahasiswa'));
     }
 
+    //Transaksi lewat midtrans
     public function transaksiWithMidtrans(Request $request, $id_tagihan)
     {
         $user = Auth::user();
         $mahasiswa = $user->mahasiswa;
-
-        \Log::info("Mulai transaksiWithMidtrans untuk id_transaksi: $id_tagihan, user_id: {$user->id}");
 
         $transaksi = Transaksi::where('id_tagihan', $id_tagihan)
             ->where('id_mahasiswa', $mahasiswa->id_mahasiswa)
@@ -127,16 +129,10 @@ class PembayaranController extends Controller
             ],
         ];
 
-        // Konfigurasi Midtrans
         Config::$serverKey = env('MIDTRANS_SERVER_KEY');
         Config::$isProduction = env('MIDTRANS_IS_PRODUCTION', false);
         Config::$isSanitized = true;
         Config::$is3ds = true;
-
-        \Log::info('Midtrans Config:', [
-            'MIDTRANS_SERVER_KEY' => env('MIDTRANS_SERVER_KEY'),
-            'MIDTRANS_IS_PRODUCTION' => env('MIDTRANS_IS_PRODUCTION'),
-        ]);
 
         try {
             $snapToken = Snap::getSnapToken($payload);
@@ -160,29 +156,24 @@ class PembayaranController extends Controller
         }
     }
 
+    //Upload bukti pembayaran
     public function uploadBuktiPembayaran(Request $request, $id_transaksi, $id_tagihan)
     {
-        // Validasi input
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         try {
-            // Ambil file dan buat nama unik
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
-
-            // Simpan ke folder public/receipts
             $file->move(public_path('receipts'), $filename);
 
-            // Cari transaksi yang sesuai
             $transaksi = Transaksi::where('id_transaksi', $id_transaksi)
                 ->first();
 
             $tagihan_mahasiswa = TagihanMahasiswa::where('id', $id_tagihan)
                 ->first();
 
-            // Jika transaksi tidak ditemukan
             if (!$transaksi) {
                 return back()->with('error', 'Transaksi tidak ditemukan.');
             }
@@ -191,7 +182,6 @@ class PembayaranController extends Controller
                 $transaksi->metode_transaksi = "tunai";
             }
 
-            // Simpan path gambar dan ubah status
             $transaksi->foto_bukti_transaksi = 'receipts/' . $filename;
             $tagihan_mahasiswa->status = 'pending';
             $transaksi->tanggal_bayar = now();

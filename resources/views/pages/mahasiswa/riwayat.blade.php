@@ -40,12 +40,14 @@
                                 <td>{{ $item->id ?? 'N/A' }}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</td>
                                 <td>{{ $item->tagihan->nama_tagihan ?? 'N/A' }}</td>
-                                <td>Rp {{ number_format($item->tagihan->nominal, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($item->tagihan->nominal, 0) }}</td>
                                 <td>
                                     @if ($item->status === 'lunas')
                                     <span class="badge bg-success">Lunas</span>
                                     @elseif ($item->status === 'pending')
                                     <span class="badge bg-warning">Pending</span>
+                                    @elseif ($item->status === 'belum bayar')
+                                    <span class="badge bg-danger">Belum bayar</span>
                                     @else
                                     <span class="badge bg-danger">Belum Bayar</span>
                                     @endif

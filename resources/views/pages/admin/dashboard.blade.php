@@ -8,7 +8,6 @@
         </div>
     </div>
 
-    {{-- Statistik Cards --}}
     <div class="row dashboard-stats mb-4">
         <div class="col-md-3">
             <div class="card dashboard-card success">
@@ -75,7 +74,6 @@
         </div>
     </div>
 
-    {{-- Transaksi Terbaru --}}
     <div class="row">
         <div class="col-md-8">
             <div class="card mb-4">
@@ -130,7 +128,6 @@
             </div>
         </div>
 
-        {{-- Pengumuman Terbaru --}}
         <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">

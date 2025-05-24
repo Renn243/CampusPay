@@ -60,7 +60,7 @@
                             <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                                 <i class="bi bi-pencil-square me-2"></i> Edit Profile
                             </button>
-                            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
                                 <i class="bi bi-key me-2"></i> Ubah Password
                             </button>
                         </div>

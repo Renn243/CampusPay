@@ -8,6 +8,7 @@ use App\Models\Pengumuman;
 
 class AdminPengumumanController extends Controller
 {
+    //Get all pengumuman (Admin)
     public function index(Request $request)
     {
         $perPage = $request->query('per_page', 10);
@@ -26,6 +27,7 @@ class AdminPengumumanController extends Controller
         return view('pages.admin.pengumuman', compact('pengumuman'));
     }
 
+    //Detail pengumuman (Admin)
     public function show($id)
     {
         $pengumumanById = Pengumuman::where('id_pengumuman', $id)->first();
@@ -37,6 +39,7 @@ class AdminPengumumanController extends Controller
         return view('pages.admin.detailPengumuman', compact('pengumumanById'));
     }
 
+    //Tampilkan page pengumuman (Admin)
     public function create()
     {
         return view('pages.admin.createPengumuman');
@@ -56,6 +59,7 @@ class AdminPengumumanController extends Controller
         return redirect()->back()->with('success', 'Pengumuman berhasil dibuat');
     }
 
+    //Hapus pengumuman (Admin)
     public function destroy($id)
     {
         $pengumuman = Pengumuman::find($id);
@@ -69,6 +73,7 @@ class AdminPengumumanController extends Controller
         return redirect()->back()->with('success', 'Pengumuman berhasil dibuat');
     }
 
+    //Update pengumuman (Admin)
     public function update(Request $request, $id)
     {
         $pengumuman = Pengumuman::find($id);

@@ -12,6 +12,7 @@ class TagihanMahasiswa extends Model
         'id_mahasiswa',
         'id_tagihan',
         'status',
+        'alasan',
     ];
 
     public function mahasiswa()

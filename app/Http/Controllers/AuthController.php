@@ -11,8 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-
-    //ini untuk tambah mahasiswa
+    //Register mahasiswa by admin
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -42,7 +41,6 @@ class AuthController extends Controller
                 ->withInput();
         }
 
-        // Create user
         $user = User::create([
             'username'       => $request->username,
             'password'       => Hash::make($request->password),
@@ -50,7 +48,6 @@ class AuthController extends Controller
             'nama_lengkap'   => $request->nama_lengkap,
         ]);
 
-        // Create mahasiswa linked to user
         $mahasiswa = Mahasiswa::create([
             'id_user'         => $user->id,
             'nim'             => $request->nim,
@@ -70,11 +67,13 @@ class AuthController extends Controller
         return redirect()->back()->with('success', 'Registrasi berhasil!');
     }
 
+    //Tampilkan form login
     public function showLoginForm()
     {
         return view('layouts.auth');
     }
 
+    //Login nahasiswa atau admin
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -99,6 +98,7 @@ class AuthController extends Controller
         ])->withInput();
     }
 
+    //Update mahasiswa
     public function update(Request $request, $id)
     {
         $request->validate([

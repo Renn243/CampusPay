@@ -7,11 +7,9 @@ use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-//Ini file ubah ke bentuk web.php untuk file view profile.blade dan detail2nya 
-
 class MahasiswaController extends Controller
 {
-    //tampilkan di profile.blade.php
+    //Get all mahasiswa
     public function get()
     {
         $user = auth()->user()->load('mahasiswa');
@@ -23,7 +21,7 @@ class MahasiswaController extends Controller
         return view('pages.mahasiswa.profile', compact('user'));
     }
 
-    //fungsi update edit password/akun
+    //Update password
     public function updateAkun(Request $request)
     {
         $user = auth()->user();
@@ -41,7 +39,7 @@ class MahasiswaController extends Controller
         return redirect()->back()->with('success', 'Password berhasi diperbarui');
     }
 
-    //fungsi edit profile di button profile.blade.php
+    // Edit profile mahasiswa
     public function updateMahasiswa(Request $request)
     {
         $user = auth()->user();

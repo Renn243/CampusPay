@@ -3,6 +3,7 @@ function toggleSidebar() {
     document.querySelector('.sidebar').classList.toggle('show');
 }
 
+// Passing data ke modal pembayaran
 paymentModal.addEventListener('show.bs.modal', function (event) {
     const button = event.relatedTarget;
 
@@ -19,6 +20,7 @@ paymentModal.addEventListener('show.bs.modal', function (event) {
     payButton.setAttribute('data-transaksi-id', id);
 });
 
+// Pembayaran midtrans
 document.addEventListener('DOMContentLoaded', function () {
     const payButton = document.getElementById('pay-button');
 
@@ -39,21 +41,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.snap_token) {
                     snap.pay(data.snap_token, {
                         onSuccess: function (result) {
+                            alert("Pembayaran berhasil");
                             document.getElementById('payment-modal').classList.add('hidden');
+                            payButton.disabled = false;
                         },
+
                         onPending: function (result) {
+                            alert("Pembayaran sedang diproses. Silakan cek status transaksi Anda.");
                             document.getElementById('payment-modal').classList.add('hidden');
+                            payButton.disabled = false;
                         },
                         onError: function (result) {
-                            alert("Gagal: " + result.status_message);
+                            alert("Pembayaran gagal: " + result.status_message);
                             document.getElementById('payment-modal').classList.add('hidden');
                             payButton.disabled = false;
                         },
                         onClose: function () {
-                            alert("Popup ditutup tanpa menyelesaikan pembayaran.");
+                            alert("Anda menutup popup pembayaran. Jika ingin membayar, silakan coba kembali.");
                             document.getElementById('payment-modal').classList.add('hidden');
                             payButton.disabled = false;
-                        }
+                        },
                     });
                 } else {
                     alert('Snap token tidak tersedia');
@@ -65,31 +72,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('Terjadi kesalahan saat memulai pembayaran.');
                 payButton.disabled = false;
             });
-
-        function updateStatus(id, result, message) {
-            fetch(`/pembayaran/updateStatus/${id}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({ result: result })
-            })
-                .then(res => res.json())
-                .then(resData => {
-                    if (resData.success) {
-                        alert(message);
-                    } else {
-                        alert('Gagal update status transaksi.');
-                    }
-                    payButton.disabled = false;
-                })
-                .catch(err => {
-                    console.error('Error update status:', err);
-                    alert('Terjadi kesalahan saat update status transaksi.');
-                    payButton.disabled = false;
-                });
-        }
     });
 });
 

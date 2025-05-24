@@ -23,9 +23,28 @@
             <a class="nav-link {{ request()->is('profile') ? 'active' : '' }}" href="{{ url('profile') }}">
                 <i class="bi bi-person"></i> Profile
             </a>
-            <a class="nav-link" href="{{ route('logout') }}" onclick="return confirm('Apakah Anda yakin ingin keluar?')">
+            <a class="nav-link" href="{{ route('logout') }}" id="logout-link">
                 <i class="bi bi-box-arrow-right"></i> Logout
             </a>
         </nav>
     </div>
 </div>
+
+<script>
+    document.getElementById('logout-link').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: 'Apakah Anda yakin ingin keluar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya',
+            confirmButtonColor: '#0d6efd',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = this.href;
+            }
+        });
+    });
+</script>

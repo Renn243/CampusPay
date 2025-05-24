@@ -63,7 +63,7 @@
                                 @elseif($item->status == 'belum bayar')
                                 <span class="badge bg-danger">Belum Bayar</span>
                                 @else
-                                <span class="badge bg-danger">ditolak</span>
+                                <span class="badge bg-danger">Ditolak</span>
                                 @endif
                             </td>
                             <td>
@@ -73,17 +73,21 @@
                                     </a>
 
                                     @if($item->status === 'pending')
-                                    <form action="{{ route('admin.updateStatusPembayaran', $item->id) }}" method="POST" style="display:inline;">
+                                    <form id="approve-form-{{ $item->id }}" action="{{ route('admin.updateStatusPembayaran', $item->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         <input type="hidden" name="status" value="lunas">
                                         <button type="submit" class="btn btn-sm btn-success" title="Approve">
                                             <i class="bi bi-check-lg"></i>
                                         </button>
                                     </form>
-                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#tolakModal">
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-danger"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#tolakModal"
+                                        data-id="{{ $item->id }}">
                                         <i class="bi bi-x-lg"></i>
                                     </button>
-                                    </form>
                                     @endif
                                 </div>
                             </td>
@@ -107,7 +111,7 @@
 <!-- Modal Upload Payment -->
 <div class="modal fade" id="tolakModal" tabindex="-1" aria-labelledby="tolakModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="{{ route('admin.updateStatusPembayaran', $item->id) }}" method="POST" enctype="multipart/form-data" class="modal-content">
+        <form id="tolakForm" method="POST" class="modal-content">
             @csrf
             <input type="hidden" name="status" value="ditolak">
             <div class="modal-header">
@@ -116,7 +120,7 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label for="image" class="form-label">Alasan Ditolak</label>
+                    <label for="alasan" class="form-label">Alasan Ditolak</label>
                     <input class="form-control" type="text" id="alasan" name="alasan" required>
                 </div>
             </div>
@@ -127,4 +131,37 @@
         </form>
     </div>
 </div>
+
+<script>
+    // Passing data ke modal tolak pembayaran
+    const tolakModal = document.getElementById('tolakModal');
+    tolakModal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const id = button.getAttribute('data-id');
+        const form = document.getElementById('tolakForm');
+        form.action = `/admin/pembayaran/tolak/${id}`;
+    });
+
+    document.querySelectorAll('form[id^="approve-form-"]').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Apakah Anda yakin ingin menyetujui pembayaran ini?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                confirmButtonColor: '#0d6efd',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+</script>
+
+</script>
 @endsection

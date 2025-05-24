@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -15,26 +14,21 @@ use Midtrans\Transaction;
 use Midtrans\Snap;
 use PDF;
 
-//Ini file ubah ke bentuk web.php untuk file view riwayat.blade/pembayaran.blade dan detail2nya (nanti tambah logic unduh bukti pembayaran)
-
+//Testing
 class TransaksiController extends Controller
 {
-    // Tampilkan semua transaksi milik mahasiswa yang sedang login (lokasi route bisa pembayaran dan riwayat pembayaran)
     public function index(Request $request)
     {
         $user = auth()->user();
 
-        // Pastikan user adalah mahasiswa
         if (!$user || !$user->mahasiswa) {
             return redirect()->back()->with('error', 'Mahasiswa tidak ditemukan atau belum login');
         }
 
         $mahasiswa = $user->mahasiswa;
 
-        // Ambil jumlah data per halaman dari query string, default 10
         $perPage = $request->query('per_page', 10);
 
-        // Ambil semua transaksi milik mahasiswa yang sedang login
         $transaksi = Transaksi::with(['mahasiswa', 'tagihan'])
             ->where('id_mahasiswa', $mahasiswa->id_mahasiswa)
             ->orderBy('created_at', 'desc')
@@ -43,8 +37,6 @@ class TransaksiController extends Controller
         return view('pages.mahasiswa.riwayat', compact('transaksi'));
     }
 
-
-    // Tampilkan detail transaksi tertentu
     public function show($id_transaksi)
     {
         $user = auth()->user();
@@ -121,7 +113,6 @@ class TransaksiController extends Controller
         }
     }
 
-    //saat pembayaran sudah dilakukan panggil fungsi ini di file view
     public function updateStatusTransaksi($id_transaksi)
     {
         $transaksi = Transaksi::where('id_transaksi', $id_transaksi)->with(['mahasiswa', 'tagihan'])->first();
@@ -132,7 +123,6 @@ class TransaksiController extends Controller
 
         $orderId = trim($transaksi->order_id);
 
-        // Midtrans config
         Config::$serverKey = env('MIDTRANS_SERVER_KEY');
         Config::$isProduction = filter_var(env('MIDTRANS_IS_PRODUCTION', false), FILTER_VALIDATE_BOOLEAN);
         Config::$isSanitized = true;
@@ -153,17 +143,13 @@ class TransaksiController extends Controller
                         'status'    => $status
                     ]);
 
-                    // Lokasi folder
                     $folderPath = public_path('receipts');
 
-                    // Nama dan path file
                     $fileName = $orderId . '.pdf';
                     $fileFullPath = $folderPath . '/' . $fileName;
 
-                    // Simpan PDF ke path lokal
                     $pdf->save($fileFullPath);
 
-                    // Simpan relative path ke database, misalnya:
                     $updateData['foto_bukti_transaksi'] = 'receipts/' . $fileName;
                 } elseif ($status->transaction_status === 'pending') {
                     $updateData['status'] = 'pending';

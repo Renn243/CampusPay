@@ -10,10 +10,11 @@ use App\Models\Transaksi;
 use App\Models\TagihanMahasiswa;
 use App\Mail\VerifyTransaction;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class AdminTransaksiController extends Controller
 {
-    //data pagination
+    //Get all pembayaran mahasiswa (Admin)
     public function index(Request $request)
     {
         $perPage = $request->query('per_page', 10);
@@ -34,7 +35,7 @@ class AdminTransaksiController extends Controller
         return view('pages.admin.pembayaran', compact('tagihan'));
     }
 
-    // Tampilkan detail transaksi tertentu (pembayaran, rincian, dan info tagihan)
+    //Detail pembayaran mahasiswa (Admin)
     public function show($id_mahasiswa, $id_tagihan)
     {
         $transaksi = Transaksi::where('id_tagihan', $id_tagihan)
@@ -53,11 +54,11 @@ class AdminTransaksiController extends Controller
         return view('pages.admin.detailPembayaran', compact('transaksi', 'tagihan'));
     }
 
-    // Update status transaksi berdasarkan request status admin (sukses, gagal)
+    // Update status transaksi, status: lunas (Admin)
     public function updateStatusPembayaran(Request $request, $id)
     {
-        $transaksiById = TagihanMahasiswa::with(['mahasiswa', 'tagihan'])  // Pastikan relasi 'mahasiswa' dan 'tagihan' sudah didefinisikan
-            ->where('id', $id)  // Filter berdasarkan id_mahasiswa
+        $transaksiById = TagihanMahasiswa::with(['mahasiswa', 'tagihan'])
+            ->where('id', $id)
             ->first();
 
         if (!$transaksiById) {
@@ -73,20 +74,21 @@ class AdminTransaksiController extends Controller
         return redirect()->back()->with('success', 'Status pembayaran berhasil diperbarui');
     }
 
-    // Update status transaksi berdasarkan request status admin (sukses, gagal)
+    // Update status transaksi mahasiswa, status: ditolak (Admin)
     public function updateStatusPembayaranTolak(Request $request, $id)
     {
-        $transaksiById = TagihanMahasiswa::with(['mahasiswa', 'tagihan'])  // Pastikan relasi 'mahasiswa' dan 'tagihan' sudah didefinisikan
-            ->where('id', $id)  // Filter berdasarkan id_mahasiswa
+        $transaksiById = TagihanMahasiswa::with(['mahasiswa', 'tagihan'])
+            ->where('id', $id)
             ->first();
 
         if (!$transaksiById) {
+            Log::warning("Transaksi tidak ditemukan dengan ID: {$id}");
             return redirect()->back()->with('error', 'Transaksi tidak ditemukan');
         }
 
-        $transaksiById->update([
-            'status'        => $request->status,
-            'alasan'        => $request->alasan,
+        $updateResult = $transaksiById->update([
+            'status' => $request->status,
+            'alasan' => $request->alasan,
         ]);
 
         Mail::to($transaksiById->mahasiswa->user->email)->send(new VerifyTransaction($transaksiById));
