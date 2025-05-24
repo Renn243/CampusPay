@@ -39,14 +39,14 @@
                                 <td class="fw-semibold">Status</td>
                                 <td>
                                     :
-                                    @if($transaksi->status == 'lunas')
+                                    @if($tagihan->status == 'lunas')
                                     <span class=" badge bg-success">Lunas</span>
-                                    @elseif($transaksi->status == 'pending')
+                                    @elseif($tagihan->status == 'pending')
                                     <span class="badge bg-warning">Pending</span>
-                                    @elseif($transaksi->status == 'belum bayar')
+                                    @elseif($tagihan->status == 'belum bayar')
                                     <span class="badge bg-danger">Belum Bayar</span>
                                     @else
-                                    <span class="badge bg-danger">ditolak</span>
+                                    <span class="badge bg-danger">Ditolak</span>
                                     @endif
                                     </span>
                                 </td>

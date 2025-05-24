@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             alert("Pembayaran berhasil");
                             document.getElementById('payment-modal').classList.add('hidden');
                             payButton.disabled = false;
+                            window.location.reload();
                         },
-
                         onPending: function (result) {
                             alert("Pembayaran sedang diproses. Silakan cek status transaksi Anda.");
                             document.getElementById('payment-modal').classList.add('hidden');
