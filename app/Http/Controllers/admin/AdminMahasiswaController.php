@@ -46,12 +46,16 @@ class AdminMahasiswaController extends Controller
     public function updateProfileMahasiswa(Request $request, $id)
     {
         $validated = $request->validate([
-            'status'         => 'required|in:aktif,non-aktif',
-            'nama_mahasiswa' => 'nullable|string|max:255',
+            'status'         => 'nullable|in:Aktif,Non-Aktif',
+            'nama_mahasiswa' => 'nullable|string',
+            'nim'            => 'nullable|string',
             'tanggal_lahir'  => 'nullable|date',
             'jenis_kelamin'  => 'nullable|in:L,P',
-            'agama'          => 'nullable|in:Islam,Kristen,Katolik,Hindu,Buddha,Konghucu,Lainnya',
-            'tempat_lahir'   => 'nullable|string|max:100',
+            'agama'          => 'nullable|in:islam,kristen,katolik,hindu,buddha,konghucu,lainnya',
+            'fakultas'       => 'nullable|in:teknik,ekonomi,kedokteran,hukum,fisip',
+            'program_studi'  => 'nullable|in:teknik informatika,teknik sipil,teknik elektro',
+            'tempat_lahir'   => 'nullable|string',
+            'alamat'         => 'nullable|string',
             'no_telp'        => 'nullable|string|max:20',
         ]);
 
@@ -61,9 +65,12 @@ class AdminMahasiswaController extends Controller
             return redirect()->back()->with('error', 'Mahasiswa tidak ditemukan');
         }
 
-        $mahasiswa->update(array_filter($validated, function ($value) {
-            return !is_null($value);
-        }));
+        // Hanya update field yang ada nilai tidak null
+        $dataToUpdate = array_filter($validated, fn($value) => !is_null($value));
+
+        if (!empty($dataToUpdate)) {
+            $mahasiswa->update($dataToUpdate);
+        }
 
         return redirect()->back()->with('success', 'Profil mahasiswa berhasil diperbarui');
     }

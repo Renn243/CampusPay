@@ -39,7 +39,7 @@
 
         Swal.fire({
             title: 'Apakah Anda yakin ingin keluar?',
-            icon: 'warning',
+            icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Ya',
             confirmButtonColor: '#0d6efd',

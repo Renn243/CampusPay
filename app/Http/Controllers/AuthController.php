@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    //Register mahasiswa by admin
+    //Register mahasiswa (Admin)
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
